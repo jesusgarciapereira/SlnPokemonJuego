@@ -40,7 +40,7 @@ namespace ENT
         { 
         }
 
-        public clsJugador(int id) // Seguramente este Constructor es innecesario
+        public clsJugador(int id) // Seguramente este Constructor es innecesario aquí
         {
             this.id = id;
         }
