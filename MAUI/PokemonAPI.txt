@@ -1,0 +1,153 @@
+Primera Solución (SlnASP)
+
+ENT
+	clsJugador
+		private int idJugador;
+		private string nick;
+		private int puntuacion;
+
+		public int IdJugador {get;}
+		public string Nick {get; set;}
+		public int Puntuacion {get; set;} 
+
+		public clsJugador() 
+        { 
+        }
+
+        public clsJugador(int id) 
+        {
+            this.id = id;
+        }
+
+        public clsJugador(int id, string nick, int puntuacion)
+        {
+            this.id = id;
+            this.nick = nick;
+            this.puntuacion = puntuacion;
+        }
+
+DAL 
+	Conexion
+		clsMyconection
+
+	clsListadosJugadorDAL
+		public static List<clsJugador> ObtenerListadoJugadoresDAL(){
+			return listadoJugadores;
+		}
+	clsManejadoraJugadorDAL
+		public static int GuardarJugador(clsJugador jugador){
+			return numFilasAfectadas;
+		}
+
+
+BLASP
+	clsListadosJugadorBL
+		public static List<clsJugador> ObtenerListadoJugadoresBL()
+		{
+    			return clsListadosJugadorDAL.ObtenerListadoJugadoresDAL();
+		} 
+	clsManejadoraJugadorBL
+		public static int CrearJugadorBL(clsJugador jugador)
+		{
+			return clsManejadoraJugadorDAL.CrearJugadorDAL(jugador);
+		}
+	
+ASP
+	Controllers
+		API
+			JugadorController
+				public IActionResult Get()
+				public IActionResult Post(FromBody clsJugador jugador)
+	Models (Carpeta vacía)
+
+Segunda Solución (SlnJuego)
+
+DTO
+	clsJugador // ¿Son necesarios los set?
+		private int idJugador;
+		private string nick;
+		private int puntuacion;
+
+		public int IdJugador {get;}
+		public string Nick {get; set;}
+		public int Puntuacion {get; set;} 
+
+		public clsJugador() 
+        { 
+        }
+
+        public clsJugador(int id) 
+        {
+            this.id = id;
+        }
+
+        public clsJugador(int id, string nick, int puntuacion)
+        {
+            this.id = id;
+            this.nick = nick;
+            this.puntuacion = puntuacion;
+        }
+
+	clsPokemon
+		private int idPokemon; // id
+		private string nombre; // name
+		private string imagen;
+
+		public int IdPokemon {get;}
+		public string Nombre {get;}
+		public int Imagen {get;} 
+
+        public clsPokemon()
+        {
+        }
+
+        public clsPokemon(int idPokemon, string nombre, string imagen)
+        {
+            this.idPokemon = idPokemon;
+            this.nombre = nombre;
+            this.imagen = imagen;
+        }
+
+// Imagen sacada de aqui
+// https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png
+Hasta 386
+
+SERVICE
+	clsUriBaseJugador
+	clsUriBasePokemon
+
+	clsPokemonService
+		// Cada uno elegiremos una manera, para saber cuántos Pokemons pedir. 151, 251 ó 386
+			https://pokeapi.co/api/v2/pokemon/?offset=0&limit=151
+		public static async Task<List<clsPokemon>> ObtenerListadoPokemons
+			...
+		public static async Task<List<clsPokemon>> ObtenerListadoPokemonsPorGeneracion(int generacion)
+			...
+	clsJugadorService
+		public static async Task<Int> GuardarJugadorService (clsJugador jugador)
+			return numFilasAfectadas;
+		}		
+		public static async Task<List<clsJugador>> ObtenerListadoJugadoresService{
+			return listadoJugadores;
+		}
+BLMAUI
+	// Ver luego qué nombres les pongo a esta clase
+	clsManejadoraAPIPokemonBL
+	clsManejadoraAPIJugadorBL
+MAUI
+	Model
+		clsPregunta
+			list<clsPokemon> completa
+			clsPokemon pokemonAdivinar
+			list<clsPokemon>opciones
+			pokemonSeleccionado
+			esCorrecto
+	
+
+
+	VM 
+		clsRankingVM
+		clsJuegoVM
+
+
+
