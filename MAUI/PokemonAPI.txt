@@ -113,8 +113,9 @@ DTO
 Hasta 386
 
 SERVICE
-	clsUriBaseJugador
-	clsUriBasePokemon
+	Conexion
+		clsUriBaseJugador
+		clsUriBasePokemon
 
 	clsPokemonService
 		// Cada uno elegiremos una manera, para saber cuántos Pokemons pedir. 151, 251 ó 386

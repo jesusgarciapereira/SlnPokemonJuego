@@ -1,4 +1,4 @@
-﻿using ENT;
+﻿using DTO;
 using Newtonsoft.Json;
 using SERVICE.Conexion;
 using System;
@@ -20,7 +20,10 @@ namespace SERVICE
         /// </summary>
         /// Pre: Ninguno.
         /// Post: Devuelve una lista de objetos de tipo clsJugador que puede estar llena, vacía o ser null si ocurre un error.
-        /// <returns>Una lista de clsJugador: llena si hay datos, vacía si no hay registros, o null si hay un error de conexión o respuesta inesperada.</returns>
+        /// <returns>Una lista de clsJugador: 
+        /// - Llena si hay datos (código 200), 
+        /// - Vacía si no hay registros (código 204)
+        /// - Null si hay un error de conexión o respuesta inesperada (código 400).</returns>
         public static async Task<List<clsJugador>> ObtenerListadoJugadoresService()
         {
             // Instanciamos el listado que devolverá la función
@@ -73,35 +76,55 @@ namespace SERVICE
 
         }
 
-        public async Task<HttpStatusCode> GuardarJugadorService(clsJugador jugador)
+        /// <summary>
+        /// Envía un objeto clsJugador a la API para guardarlo mediante una solicitud HTTP POST.
+        /// </summary>
+        /// <param name="jugador">El objeto clsJugador que se desea enviar para ser guardado.</param>
+        /// Pre: Ninguno.
+        /// Post: Devuelve sólo 200, 404, o 400
+        /// <returns>
+        /// Un HttpStatusCode que indica el resultado de la solicitud:
+        /// - 200 si el jugador fue guardado correctamente.
+        /// - 404 si no se guardó ningún jugador.
+        /// - 400 si ocurrió un error durante la solicitud.
+        /// </returns>
+        public static async Task<HttpStatusCode> GuardarJugadorService(clsJugador jugador)
         {
+            // Objeto que contendrá la respuesta HTTP de la API
+            HttpResponseMessage miRespuesta = new HttpResponseMessage();
+
             // Instanciamos un httpClient porque nos comunicamos con protocolo http
             HttpClient mihttpClient = new HttpClient();
 
+            // Variable para almacenar la representación JSON del jugador
             string datos; // El Body
+            // Variable que representa el contenido HTTP que se enviará en el body de la petición POST
             HttpContent contenido; // El Header
 
             // Pido la cadena de la Uri al método estático
             string miCadenaUrl = clsUriBaseJugador.getUriBase();
 
             // Convierto el Uri en una cadena de conexion y le añado /Jugador
-            Uri miUri = new Uri($"{miCadenaUrl}Jugador");
+            Uri miUri = new Uri($"{miCadenaUrl}/Jugador");
 
-            //Usaremos el Status de la respuesta para comprobar si ha borrado
-            HttpResponseMessage miRespuesta = new HttpResponseMessage();
-            try
-            {
-                datos = JsonConvert.SerializeObject(jugador);
+            //try
+            //{
 
-                contenido = new StringContent(datos, System.Text.Encoding.UTF8, "application/json");
-                miRespuesta = await mihttpClient.PostAsync(miUri, contenido);
+            // Serializa el objeto jugador a formato JSON
+            datos = JsonConvert.SerializeObject(jugador);
 
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            // Crea el contenido HTTP con los datos JSON y establece el tipo de contenido (application/json)
+            contenido = new StringContent(datos, System.Text.Encoding.UTF8, "application/json");
+            // Envía la petición POST de forma asíncrona y espera la respuesta
+            miRespuesta = await mihttpClient.PostAsync(miUri, contenido);
 
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
+
+            // Devuelve el código de estado HTTP recibido en la respuesta
             return miRespuesta.StatusCode;
         }
 

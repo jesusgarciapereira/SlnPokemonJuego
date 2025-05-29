@@ -22,7 +22,7 @@ namespace SERVICE.Conexion
         #region Constructores
         public clsUriBasePokemon()
         {
-            this.uriBase = "https://pokeapi.co/api/v2/pokemon/";
+            this.uriBase = "https://pokeapi.co/api/v2/pokemon";
         }
 
         public clsUriBasePokemon(string uriBase)
@@ -34,7 +34,7 @@ namespace SERVICE.Conexion
         #region Métodos
         public static string getUriBase()
         {
-            return "https://pokeapi.co/api/v2/pokemon/";
+            return "https://pokeapi.co/api/v2/pokemon";
         }
         #endregion
     }

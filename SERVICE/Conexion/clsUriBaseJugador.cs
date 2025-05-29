@@ -22,7 +22,7 @@ namespace SERVICE.Conexion
         #region Constructores
         public clsUriBaseJugador()
         {
-            this.uriBase = "https://apijugadores.azurewebsites.net/";
+            this.uriBase = "https://apijugadores.azurewebsites.net";
         }
 
         public clsUriBaseJugador(string uriBase)
@@ -34,7 +34,7 @@ namespace SERVICE.Conexion
         #region Métodos
         public static string getUriBase()
         {
-            return "https://apijugadores.azurewebsites.net/";
+            return "https://apijugadores.azurewebsites.net";
         }
         #endregion
     }

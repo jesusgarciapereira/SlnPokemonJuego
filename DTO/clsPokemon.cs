@@ -32,7 +32,7 @@ namespace DTO
         {
             get { return imagen; }
         }
-        // Ninguno tiene set porque todo está cogido de una API
+        // ¿Ninguno tiene set porque todo está cogido de una API?
         #endregion
 
         #region Constructores
