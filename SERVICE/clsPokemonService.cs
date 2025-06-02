@@ -8,25 +8,25 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Diagnostics.Metrics;
 
 namespace SERVICE
 {
     public class clsPokemonService
     {
         /// <summary>
-        /// Realiza una solicitud HTTP a la PokeAPI para obtener un listado de Pokémon con paginación mediante offset y limit.
-        /// Pre: Los parámetros deben ser valores válidos para obtener la primera, segunda, tercera o las tres generaciones
+        /// Realiza una solicitud HTTP a la PokeAPI para obtener un listado de Pokémon con paginación mediante offset y limit según la generación del parámetro.
+        /// Pre: Sólo se permiten como parámetros los números 1, 2, 3 y 0 (De momento) 
         /// Post: Ninguna
         /// </summary>
-        /// <param name="offset">Número de Pokémon a omitir desde el inicio (inicio del bloque de resultados).</param>
-        /// <param name="limit">Cantidad de Pokémon a obtener a partir del offset.</param>
+        /// <param name="generacion">Número correspondiente a la generación</param>
         /// <returns>
         /// Una lista de objetos clsPokemon:
         /// - Llena si la API devuelve datos (código 200).
         /// - Vacía si no hay datos disponibles (código 204).
         /// - Null si ocurre un error en la solicitud (código 400).
         /// </returns>
-        public static async Task<List<clsPokemon>> ObtenerListadoPokemonPartidaService(int offset, int limit)
+        public static async Task<List<clsPokemon>> ObtenerListadoPokemonPorGeneracionService(int generacion)
         {
             // Lista que contendrá los Pokémon recuperados
             List<clsPokemon> listadoPokemon;
@@ -37,6 +37,10 @@ namespace SERVICE
             int idPokemon;
             string nombre;
             string imagen;
+
+            // Variables para la Uri
+            int offset;
+            int limit;
 
             // La respuesta: El 404, el 200, etc…
             HttpResponseMessage miCodigoRespuesta;
@@ -50,7 +54,41 @@ namespace SERVICE
             // Pido la cadena de la Uri al método estático
             string miCadenaUrl = clsUriBasePokemon.getUriBase();
 
-            // Convierto el Uri en una cadena de conexion y le añado los parámetros
+            // Asignación de variables de la Uri según el parámetro
+            switch (generacion)
+            {
+                // Primera generación
+                case 1:
+                    offset = 0;
+                    limit = 151;
+                    break;
+
+                // Segunda generación
+                case 2:
+                    offset = 151;
+                    limit = 100;
+                    break;
+
+                // Tercera generación
+                case 3:
+                    offset = 251;
+                    limit = 135;
+                    break;
+
+                // Las 3 generaciones
+                case 0:
+                    offset = 0;
+                    limit = 386;
+                    break;
+
+                // NO DEBERÍA SUCEDER
+                default:
+                    offset = -1;
+                    limit = -1;
+                    break;
+            }
+
+            // Convierto el Uri en una cadena de conexion y le añado las variables de la Uri
             Uri miUri = new Uri($"{miCadenaUrl}?offset={offset}&limit={limit}");
 
             // Objeto JObject con el json completo recibido

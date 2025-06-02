@@ -11,19 +11,20 @@ namespace BLMAUI
     public class clsPokemonServiceBL
     {
         /// <summary>
-        /// Realiza una solicitud HTTP a la PokeAPI para obtener un listado de Pokémon con paginación mediante offset y limit desde la capa SERVICE.
+        /// Realiza una solicitud HTTP a la PokeAPI para obtener un listado de Pokémon con paginación mediante offset y limit desde la capa SERVICE según la generación del parámetro.
+        /// Pre: Sólo se permiten como parámetros los números 1, 2, 3 y 0 (De momento) 
+        /// Post: Ninguna
         /// </summary>
-        /// <param name="offset">Número de Pokémon a omitir desde el inicio (inicio del bloque de resultados).</param>
-        /// <param name="limit">Cantidad de Pokémon a obtener a partir del offset.</param>
+        /// <param name="generacion">Número correspondiente a la generación</param>
         /// <returns>
         /// Una lista de objetos clsPokemon con las reglas de negocio aplicadas:
         /// - Llena si la API devuelve datos (código 200).
         /// - Vacía si no hay datos disponibles (código 204).
         /// - Null si ocurre un error en la solicitud (código 400).
         /// </returns>
-        public static async Task<List<clsPokemon>> ObtenerListadoPokemonPartidaService(int offset, int limit)
+        public static async Task<List<clsPokemon>> ObtenerListadoPokemonPorGeneracionBL(int generacion)
         {
-            return await clsPokemonService.ObtenerListadoPokemonPartidaService(offset, limit);
+            return await clsPokemonService.ObtenerListadoPokemonPorGeneracionService(generacion);
         }
     }
 }
