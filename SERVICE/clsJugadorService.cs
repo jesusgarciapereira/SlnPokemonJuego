@@ -42,7 +42,7 @@ namespace SERVICE
             string miCadenaUrl = clsUriBaseJugador.getUriBase();
 
             // Convierto el Uri en una cadena de conexion y le añado /Jugador
-            Uri miUri = new Uri($"{miCadenaUrl}Jugador");
+            Uri miUri = new Uri($"{miCadenaUrl}/Jugador");
 
             // await porque tengo que esperarlo, este Método es un Get
             miCodigoRespuesta = await mihttpClient.GetAsync(miUri);

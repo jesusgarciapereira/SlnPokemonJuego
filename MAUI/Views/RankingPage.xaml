@@ -1,11 +1,51 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MAUI.VM"
              x:Class="MAUI.Views.RankingPage"
              Title="RankingPage">
-    <VerticalStackLayout>
-        <Label Text="RANKING"
-       FontSize="24"
-       HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <ContentPage.BindingContext>
+        <vm:clsRankingVM />
+    </ContentPage.BindingContext>
+
+
+    <StackLayout Padding="20" Spacing="15">
+
+        <Button Text="Actualizar Ranking"
+            Command="{Binding BotonActualizar}" />
+
+        <ActivityIndicator IsRunning="{Binding Cargando}" IsVisible="{Binding Cargando}"/>
+
+        <Label Text="No hay Jugadores disponibles en la Base de Datos"
+           TextColor="Red"
+           FontAttributes="Bold"
+           IsVisible="{Binding ListaVacia}"
+           HorizontalOptions="Center" />
+
+        <ListView ItemsSource="{Binding ListaJugadoresVisible}" 
+              HasUnevenRows="True"
+              SeparatorVisibility="Default">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" Margin="5">
+                            <StackLayout>
+                                <Label Text="{Binding Id}" 
+                                   FontAttributes="Bold"
+                                   FontSize="18"/>
+                                <Label Text="{Binding Nick}" 
+                                    FontAttributes="Bold"
+                                    FontSize="18"/>
+                                <Label Text="{Binding Puntuacion}" 
+                                    FontAttributes="Bold"
+                                    FontSize="18"/>
+                            </StackLayout>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </StackLayout>
 </ContentPage>

@@ -34,7 +34,7 @@ namespace SERVICE.Conexion
         #region Métodos
         public static string getUriBase()
         {
-            return "https://apijugadores.azurewebsites.net";
+            return "https://apijugadores.azurewebsites.net/api";
         }
         #endregion
     }
