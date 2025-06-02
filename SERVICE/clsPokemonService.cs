@@ -15,6 +15,8 @@ namespace SERVICE
     {
         /// <summary>
         /// Realiza una solicitud HTTP a la PokeAPI para obtener un listado de Pokémon con paginación mediante offset y limit.
+        /// Pre: Los parámetros deben ser valores válidos para obtener la primera, segunda, tercera o las tres generaciones
+        /// Post: Ninguna
         /// </summary>
         /// <param name="offset">Número de Pokémon a omitir desde el inicio (inicio del bloque de resultados).</param>
         /// <param name="limit">Cantidad de Pokémon a obtener a partir del offset.</param>
