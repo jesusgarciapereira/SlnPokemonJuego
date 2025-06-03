@@ -50,6 +50,7 @@ namespace MAUI.VM
         #region Constructores
         public clsRankingVM()
         {
+            // Se ejecuta también al inicio
             actualizarExecute();
 
             botonActualizar = new DelegateCommand(actualizarExecute); // Podríamos poner un CanExecute() para que no se pulse tan consecutivamente

@@ -14,9 +14,12 @@
             <Label Text="Pokémon Advance"
                    FontSize="24"
                    HorizontalOptions="Center" />
-
+            
+            <Button Text="Seleccionar Partida"
+                    Command="{Binding BotonSeleccionarPartida}" />
             <Button Text="Ranking"
                     Command="{Binding BotonRanking}" />
+            
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

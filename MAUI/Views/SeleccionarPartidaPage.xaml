@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:MAUI.VM"
+             x:Class="MAUI.Views.SeleccionarPartidaPage"
+             Title="SeleccionarPartidaPage">
+    
+    <ContentPage.BindingContext>
+        <vm:clsSeleccionarPartidaPageVM />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <VerticalStackLayout Padding="20">
+            <Label Text="Pokémon Advance"
+                   FontSize="24"
+                   HorizontalOptions="Center" />
+
+            <Button Text="Primera Generación"
+                    Command="{Binding BotonGeneracion1}" />
+            <Button Text="Segunda Generación"
+                    Command="{Binding BotonGeneracion2}" />
+            <Button Text="Tercera Generación"
+                    Command="{Binding BotonGeneracion3}" />
+            <Button Text="TODAS"
+                     Command="{Binding BotonGeneracionTodas}" />
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>

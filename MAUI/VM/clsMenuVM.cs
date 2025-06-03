@@ -11,12 +11,16 @@ namespace MAUI.VM
     public class clsMenuVM
     {
         #region Atributos
-
+        private DelegateCommand botonSeleccionarPartida;
         private DelegateCommand botonRanking;
+
         #endregion
 
         #region Propiedades
-
+        public DelegateCommand BotonSeleccionarPartida
+        {
+            get { return botonSeleccionarPartida; }
+        }
         public DelegateCommand BotonRanking
         {
             get { return botonRanking; }
@@ -26,6 +30,7 @@ namespace MAUI.VM
         #region Constructores
         public clsMenuVM() 
         {
+            botonSeleccionarPartida = new DelegateCommand(seleccionarPartidaExecute);
             botonRanking = new DelegateCommand(rankingExecute);
         }
         #endregion
@@ -62,6 +67,14 @@ namespace MAUI.VM
         private void rankingExecute()
         {
             navegar(new RankingPage());
+        }
+
+        /// <summary>
+        /// Método asociado al execute del comando botonSeleccionarPartida que navega a SeleccionarPartidaPage
+        /// </summary>
+        private void seleccionarPartidaExecute()
+        {
+            navegar(new SeleccionarPartidaPage());
         }
         #endregion
     }

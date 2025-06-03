@@ -136,19 +136,26 @@ BLMAUI
 	clsManejadoraAPIPokemonBL
 	clsManejadoraAPIJugadorBL
 MAUI
-	Model
+	Models
 		clsPregunta
-			list<clsPokemon> completa
-			clsPokemon pokemonAdivinar
-			list<clsPokemon>opciones
-			pokemonSeleccionado
-			esCorrecto
+			¿List<clsPokemon> completa ?
+			public clsPokemon pokemonPreguntado {get;}
+			public List<clsPokemon> opciones {get;}
+			public clsPokemon pokemonSeleccionado {get; set;}
+			public bool esCorrecto {get;} // porque necesito saberlo en la partida para sumar puntos o no
+			¿private? int tiempo {}
 	
 
 
 	VM 
 		clsRankingVM
-		clsJuegoVM
+		clsPartidaVM
+			¿ private List<clsPokemon> listadoGeneracionElegida ?
+			private List<clsPregunta> listadoPreguntas
+			public clsPregunta preguntaActual {get;}
+			public int puntosTotales {get;} // es calculado
+			private int cantPreguntas {get;}
+			¿Nick?
 
 
 
