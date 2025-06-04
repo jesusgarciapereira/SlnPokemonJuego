@@ -22,8 +22,8 @@
                                         FontAttributes="Bold"
                                         FontSize="18"/>
                                 <Image Source="{Binding Imagen}" 
-                                        HeightRequest="200" 
-                                        WidthRequest="200" 
+                                        HeightRequest="400" 
+                                        WidthRequest="400" 
                                         Aspect="AspectFit"/>
                             </StackLayout>
                         </Frame>

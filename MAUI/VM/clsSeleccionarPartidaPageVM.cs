@@ -65,7 +65,7 @@ namespace MAUI.VM
         /// <summary>
         /// Navega hacia la página de partida seleccionada pasando el objeto del parámetro.
         /// </summary>
-        /// <param name="temperaturasConNombreInvernadero">Objeto de tipo clsTemperaturaConNombreInvernadero que recibirá la nueva página</param>
+        /// <param name="listadoPokemonPartida">Listado de Pokémon totales de una generación en concreto que recibirá la nueva página</param>
         private async void enviaDatosNavigation(List<clsPokemon> listadoPokemonPartida)
         {
             await Application.Current.MainPage.Navigation.PushAsync(new PartidaPage(listadoPokemonPartida));
