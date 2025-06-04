@@ -14,7 +14,7 @@ public partial class PartidaPage : ContentPage
     public PartidaPage(List<clsPokemon> listadoPokemonPartida)
     {
         InitializeComponent();
-        BindingContext = new clsPartidaVM(new ObservableCollection<clsPokemon>(listadoPokemonPartida));
+        BindingContext = new clsPartidaVM(listadoPokemonPartida);
 
     }
 }

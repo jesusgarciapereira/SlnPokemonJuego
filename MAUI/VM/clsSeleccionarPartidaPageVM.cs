@@ -4,7 +4,9 @@ using MAUI.Views;
 using MAUI.VM.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,6 +38,8 @@ namespace MAUI.VM
         {
             get { return botonGeneracionTodas; }
         }
+
+        
         #endregion
 
         #region Constructores
@@ -61,6 +65,8 @@ namespace MAUI.VM
         {
             await Application.Current.MainPage.DisplayAlert(titulo, cuerpo, boton);
         }
+
+        
 
         /// <summary>
         /// Navega hacia la página de partida seleccionada pasando el objeto del parámetro.
