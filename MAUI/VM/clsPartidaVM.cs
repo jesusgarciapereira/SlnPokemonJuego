@@ -37,6 +37,11 @@ namespace MAUI.VM
             get { return listaPreguntas; }
         }
 
+        public clsPregunta PreguntaActual
+        {
+            get { return preguntaActual; }
+        }
+
         public int CantPreguntas
         {
             get { return cantPreguntas; }
@@ -52,15 +57,16 @@ namespace MAUI.VM
         {
         }
 
-        public clsPartidaVM(List<clsPokemon> listaPokemonGeneracion)
+        public clsPartidaVM(List<clsPokemon> listaPokemonPartida)
         {
             // this.listaPokemonGeneracion = listaPokemonGeneracion;
+            this.preguntaActual = new clsPregunta();
             this.cantPreguntas = 20;
-            this.listaPreguntas = GeneraPreguntas(listaPokemonGeneracion, cantPreguntas, new clsPregunta().CantOpciones);
+            this.listaPreguntas = GeneraPreguntas(listaPokemonPartida, cantPreguntas, preguntaActual.CantOpciones);
 
-            for (int i = 0; listaPreguntas.Count > 0; i++) 
+            for (int i = 0; i < listaPreguntas.Count(); i++) 
             {
-                this.preguntaActual = listaPreguntas[0];
+                this.preguntaActual = listaPreguntas[i];
                 // Notificar y esperar 5 segundos
             }
             
@@ -119,23 +125,26 @@ namespace MAUI.VM
         /// Pre: La lista original de Pokémon debe contener suficientes elementos para generar 
         ///      la cantidad de preguntas multiplicada por la cantidad de opciones por pregunta.
         /// Post: Se devuelve una lista de preguntas con las opciones y el Pokémon preguntado asignados.
-        /// <param name="listaPokemonGeneracion">Lista original de Pokémon disponibles para generar las preguntas.</param>
+        /// <param name="listaPokemonPartida">Lista original de Pokémon disponibles para generar las preguntas.</param>
         /// <param name="cantPreguntas">Número de preguntas que se desean generar.</param>
         /// <param name="cantOpciones">Cantidad de opciones por pregunta.</param>
         /// <returns>
         /// Una lista de objetos clsPregunta, cada uno con un Pokémon preguntado y su lista de opciones.
         /// Las opciones no se repiten entre preguntas.
         /// </returns>
-        private List<clsPregunta> GeneraPreguntas(List<clsPokemon> listaPokemonGeneracion, int cantPreguntas, int cantOpciones)
+        private List<clsPregunta> GeneraPreguntas(List<clsPokemon> listaPokemonPartida, int cantPreguntas, int cantOpciones)
         {
-            List<clsPokemon> listaOpcionesTotales = ObtenerPokemonAleatorios(listaPokemonGeneracion, cantPreguntas * (new clsPregunta().CantOpciones));
+            List<clsPokemon> listaOpcionesTotales = ObtenerPokemonAleatorios(listaPokemonPartida, cantPreguntas * preguntaActual.CantOpciones);
 
             List<clsPregunta> preguntas = new List<clsPregunta>();
-            List<clsPokemon> opcionesPregunta = new List<clsPokemon>();
+            List<clsPokemon> opcionesPregunta;
             clsPokemon pokemonPreguntado;
+            clsPregunta pregunta;
 
             for (int i = 0; i < cantPreguntas; i++)
             {
+                opcionesPregunta = new List<clsPokemon>();
+
                 for (int j = 0; j < cantOpciones; j++)
                 {
                     opcionesPregunta.Add(listaOpcionesTotales[j]);
@@ -145,9 +154,10 @@ namespace MAUI.VM
 
                 pokemonPreguntado = ObtenerPokemonAleatorios(opcionesPregunta, 1)[0];
 
-                preguntas.Add(new clsPregunta(pokemonPreguntado, new List<clsPokemon>(opcionesPregunta)));
+                // pregunta = new clsPregunta(pokemonPreguntado, new List<clsPokemon>(opcionesPregunta));
+                pregunta = new clsPregunta(pokemonPreguntado, opcionesPregunta);
 
-                opcionesPregunta.Clear();
+                preguntas.Add(pregunta);
             }
 
             return preguntas;

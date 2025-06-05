@@ -5,32 +5,40 @@
              x:Class="MAUI.Views.PartidaPage"
              Title="PartidaPage">
 
-    <StackLayout Padding="20" Spacing="15">
+    <VerticalStackLayout Padding="20">
 
-        <ListView ItemsSource="{Binding ListaPokemonComprobar}" 
-          HasUnevenRows="True"
-          SeparatorVisibility="Default">
-            <ListView.ItemTemplate>
+        <!-- Imagen del Pokémon preguntado -->
+        <Image Source="{Binding PreguntaActual.PokemonPreguntado.Imagen}"
+           HeightRequest="150"
+           WidthRequest="150"
+           HorizontalOptions="Center"
+           Margin="0,20,0,10" />
+
+        <!-- Opciones como tabla 2x2 -->
+        <CollectionView ItemsSource="{Binding PreguntaActual.Opciones}" 
+                        SelectionMode="Single"
+                        SelectedItem="{Binding PokemonSeleccionado, Mode=TwoWay}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="2" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" Margin="5">
-                            <StackLayout>
-                                <Label Text="{Binding IdPokemon}" 
-                                        FontAttributes="Bold"
-                                        FontSize="18"/>
-                                <Label Text="{Binding Nombre}" 
-                                        FontAttributes="Bold"
-                                        FontSize="18"/>
-                                <Image Source="{Binding Imagen}" 
-                                        HeightRequest="400" 
-                                        WidthRequest="400" 
-                                        Aspect="AspectFit"/>
-                            </StackLayout>
-                        </Frame>
-                    </ViewCell>
+                    <Frame BorderColor="LightGray"
+                           CornerRadius="12"
+                           Padding="10"
+                           Margin="5"
+                           BackgroundColor="LightYellow">
+                        <Label Text="{Binding Nombre}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               FontSize="18" />
+                    </Frame>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
-    </StackLayout>
+    </VerticalStackLayout>
+
 </ContentPage>
