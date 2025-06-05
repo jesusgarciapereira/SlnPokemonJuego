@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MAUI.Models
 {
-    public class clsPregunta
+    public class clsPregunta : INotifyPropertyChanged
     {
         #region Atributos
         clsPokemon pokemonPreguntado;
@@ -18,6 +18,7 @@ namespace MAUI.Models
         bool esCorrecto;
         int tiempo;
         int cantOpciones;
+        private IDispatcherTimer temporizador;
         #endregion
 
         #region Propiedades
@@ -64,7 +65,11 @@ namespace MAUI.Models
             this.pokemonPreguntado = pokemonPreguntado;
             this.opciones = opciones;
 
-            // CuentaAtras();
+            temporizador = Application.Current.Dispatcher.CreateTimer();
+            temporizador.Interval = TimeSpan.FromSeconds(1); // Intervalo de segundos
+            temporizador.Tick += RestarContador; // Lo que hacemos en cada segundo, evento RestarContador
+
+            temporizador.Start();
 
         }
         #endregion
@@ -80,14 +85,10 @@ namespace MAUI.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private async Task CuentaAtras()
+        private void RestarContador(object sender, EventArgs e)
         {
-            while (this.tiempo > 0)
-            {
-                await Task.Delay(1000);
-                this.tiempo--;
-                NotifyPropertyChanged(nameof(Tiempo));
-            }
+            tiempo--;
+            NotifyPropertyChanged(nameof(Tiempo));
         }
     }
     #endregion

@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace MAUI.VM
 {
     public class clsPartidaVM : INotifyPropertyChanged
@@ -20,6 +21,8 @@ namespace MAUI.VM
         private clsPregunta preguntaActual;
         private int puntosTotales;
         private int cantPreguntas;
+        
+        
         #endregion
 
         #region Propiedades
@@ -53,6 +56,10 @@ namespace MAUI.VM
             get { return cantPreguntas; }
         }
 
+        
+
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         // NotifyPropertyChanged(nameof(ListaLuchadoresConPuntuacionTotal));
@@ -67,6 +74,7 @@ namespace MAUI.VM
         {
             // this.listaPokemonGeneracion = listaPokemonGeneracion;
             this.preguntaActual = new clsPregunta();
+
             this.cantPreguntas = 20;
             this.listaPreguntas = GeneraPreguntas(listaPokemonPartida, cantPreguntas, preguntaActual.CantOpciones);
 
@@ -176,6 +184,7 @@ namespace MAUI.VM
         {
             for (int i = 0; i < listaPreguntas.Count; i++)
             {
+
                 this.preguntaActual = listaPreguntas[i];
 
                 NotifyPropertyChanged(nameof(PreguntaActual));
@@ -185,7 +194,6 @@ namespace MAUI.VM
         }
 
         
-
         #endregion
     }
 
