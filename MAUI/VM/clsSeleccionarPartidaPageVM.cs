@@ -15,40 +15,23 @@ namespace MAUI.VM
     public class clsSeleccionarPartidaPageVM
     {
         #region Atributos
-        private DelegateCommand<string> botonGeneracion1;
-        private DelegateCommand<int> botonGeneracion2;
-        private DelegateCommand<int> botonGeneracion3;
-        private DelegateCommand<int> botonGeneracionTodas;
+        private DelegateCommand<string> botonGeneracion;
         #endregion
 
         #region Propiedades
-        public DelegateCommand<string> BotonGeneracion1
+        public DelegateCommand<string> BotonGeneracion
         {
-            get { return botonGeneracion1; }
+            get { return botonGeneracion; }
         }
-        public DelegateCommand<int> BotonGeneracion2
-        {
-            get { return botonGeneracion2; }
-        }
-        public DelegateCommand<int> BotonGeneracion3
-        {
-            get { return botonGeneracion3; }
-        }
-        public DelegateCommand<int> BotonGeneracionTodas
-        {
-            get { return botonGeneracionTodas; }
-        }
-
         
+
+     
         #endregion
 
         #region Constructores
         public clsSeleccionarPartidaPageVM()
         {
-            botonGeneracion1 = new DelegateCommand<string>(generacion1Execute);
-            // botonGeneracion2 = new DelegateCommand<int>(generacion2Execute);
-            //botonGeneracion3 = new DelegateCommand(generacion3Execute);
-            //botonGeneracionTodas = new DelegateCommand(generacionTodasExecute);
+            botonGeneracion = new DelegateCommand<string>(generacionExecute);
         }
         #endregion
 
@@ -79,94 +62,20 @@ namespace MAUI.VM
         #endregion
 
         #region Comandos
+
         /// <summary>
-        /// Método asociado al execute del comando botonGeneracion1 que navega a la página de Partida con la Primera Generación
+        /// Método asociado al execute del comando botonGeneracion que navega a la página de Partida con la Generación escogida
         /// </summary>
-        private async void generacion1Execute(string generacion)
+        /// Pre: Sólo se permiten como parámetros los números 1, 2, 3 y 0 (De momento) en formato string
+        /// Post: Ninguna
+        /// <param name="generacion">Número correspondiente a la Generación, en formato string</param>
+        private async void generacionExecute(string generacion)
         {
             List<clsPokemon> listadoPokemonPartida;
 
-            if (await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(1) != null) // Para evitar NullArgumentException
+            if (await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(int.Parse(generacion)) != null) // Para evitar NullArgumentException
             {
-                listadoPokemonPartida = await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(1);
-
-                if (listadoPokemonPartida.Count == 0)
-                {
-                    muestraMensaje("Sin datos", "No se encontraron datos, vuelva a intentarlo más tarde", "OK");
-                }
-                else
-                {
-                    enviaDatosNavigation(listadoPokemonPartida);
-                }
-            }
-            else
-            {
-                muestraMensaje("Error", "Ha habido un problema en la Base de Datos, vuelva a intentarlo más tarde", "OK");
-            }
-        }
-
-        /// <summary>
-        /// Método asociado al execute del comando botonGeneracion2 que navega a la página de Partida con la Segunda Generación
-        /// </summary>
-        private async void generacion2Execute()
-        {
-            List<clsPokemon> listadoPokemonPartida;
-
-            if (await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(2) != null) // Para evitar NullArgumentException
-            {
-                listadoPokemonPartida = await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(2);
-
-                if (listadoPokemonPartida.Count == 0)
-                {
-                    muestraMensaje("Sin datos", "No se encontraron datos, vuelva a intentarlo más tarde", "OK");
-                }
-                else
-                {
-                    enviaDatosNavigation(listadoPokemonPartida);
-                }
-            }
-            else
-            {
-                muestraMensaje("Error", "Ha habido un problema en la Base de Datos, vuelva a intentarlo más tarde", "OK");
-            }
-        }
-
-        /// <summary>
-        /// Método asociado al execute del comando botonGeneracion3 que navega a la página de Partida con la Tercera Generación
-        /// </summary>
-        private async void generacion3Execute()
-        {
-            List<clsPokemon> listadoPokemonPartida;
-
-            if (await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(3) != null) // Para evitar NullArgumentException
-            {
-                listadoPokemonPartida = await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(3);
-
-                if (listadoPokemonPartida.Count == 0)
-                {
-                    muestraMensaje("Sin datos", "No se encontraron datos, vuelva a intentarlo más tarde", "OK");
-                }
-                else
-                {
-                    enviaDatosNavigation(listadoPokemonPartida);
-                }
-            }
-            else
-            {
-                muestraMensaje("Error", "Ha habido un problema en la Base de Datos, vuelva a intentarlo más tarde", "OK");
-            }
-        }
-
-        /// <summary>
-        /// Método asociado al execute del comando botonGeneracionTodas que navega a la página de Partida con todas las Generaciones
-        /// </summary>
-        private async void generacionTodasExecute()
-        {
-            List<clsPokemon> listadoPokemonPartida;
-
-            if (await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(0) != null) // Para evitar NullArgumentException
-            {
-                listadoPokemonPartida = await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(0);
+                listadoPokemonPartida = await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(int.Parse(generacion));
 
                 if (listadoPokemonPartida.Count == 0)
                 {

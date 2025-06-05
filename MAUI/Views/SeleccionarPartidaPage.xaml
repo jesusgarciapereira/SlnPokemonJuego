@@ -16,16 +16,17 @@
                    HorizontalOptions="Center" />
 
             <Button Text="Primera Generación"
-                    Command="{Binding BotonGeneracion1}"
+                    Command="{Binding BotonGeneracion}"
                     CommandParameter="1"/>
             <Button Text="Segunda Generación"
-                    Command="{Binding BotonGeneracion1}"
-                    CommandParameter="2"
-                    />
+                    Command="{Binding BotonGeneracion}"
+                    CommandParameter="2"/>
             <Button Text="Tercera Generación"
-                    Command="{Binding BotonGeneracion3}" />
+                    Command="{Binding BotonGeneracion}" 
+                    CommandParameter="3"/>
             <Button Text="TODAS"
-                     Command="{Binding BotonGeneracionTodas}" />
+                    Command="{Binding BotonGeneracion}"
+                    CommandParameter="0"/>
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>
