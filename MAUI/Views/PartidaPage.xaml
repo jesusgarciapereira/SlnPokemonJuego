@@ -22,8 +22,8 @@
             <!-- Imagen del Pokémon preguntado -->
             <Image Grid.Column="1"
                    Source="{Binding PreguntaActual.PokemonPreguntado.Imagen}"
-                   HeightRequest="150"
-                   WidthRequest="150"
+                   HeightRequest="400"
+                   WidthRequest="400"
                    VerticalOptions="Center"
                    HorizontalOptions="Center" />
 

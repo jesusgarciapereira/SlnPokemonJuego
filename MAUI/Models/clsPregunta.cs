@@ -87,8 +87,15 @@ namespace MAUI.Models
 
         private void RestarContador(object sender, EventArgs e)
         {
-            tiempo--;
-            NotifyPropertyChanged(nameof(Tiempo));
+            if (tiempo > 0)
+            {
+                tiempo--;
+                NotifyPropertyChanged(nameof(Tiempo));
+            }
+            else
+            {
+                temporizador.Stop();
+            }
         }
     }
     #endregion
