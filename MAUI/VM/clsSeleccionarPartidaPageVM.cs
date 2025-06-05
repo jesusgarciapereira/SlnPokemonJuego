@@ -15,26 +15,26 @@ namespace MAUI.VM
     public class clsSeleccionarPartidaPageVM
     {
         #region Atributos
-        private DelegateCommand botonGeneracion1;
-        private DelegateCommand botonGeneracion2;
-        private DelegateCommand botonGeneracion3;
-        private DelegateCommand botonGeneracionTodas;
+        private DelegateCommand<string> botonGeneracion1;
+        private DelegateCommand<int> botonGeneracion2;
+        private DelegateCommand<int> botonGeneracion3;
+        private DelegateCommand<int> botonGeneracionTodas;
         #endregion
 
         #region Propiedades
-        public DelegateCommand BotonGeneracion1
+        public DelegateCommand<string> BotonGeneracion1
         {
             get { return botonGeneracion1; }
         }
-        public DelegateCommand BotonGeneracion2
+        public DelegateCommand<int> BotonGeneracion2
         {
             get { return botonGeneracion2; }
         }
-        public DelegateCommand BotonGeneracion3
+        public DelegateCommand<int> BotonGeneracion3
         {
             get { return botonGeneracion3; }
         }
-        public DelegateCommand BotonGeneracionTodas
+        public DelegateCommand<int> BotonGeneracionTodas
         {
             get { return botonGeneracionTodas; }
         }
@@ -45,10 +45,10 @@ namespace MAUI.VM
         #region Constructores
         public clsSeleccionarPartidaPageVM()
         {
-            botonGeneracion1 = new DelegateCommand(generacion1Execute);
-            botonGeneracion2 = new DelegateCommand(generacion2Execute);
-            botonGeneracion3 = new DelegateCommand(generacion3Execute);
-            botonGeneracionTodas = new DelegateCommand(generacionTodasExecute);
+            botonGeneracion1 = new DelegateCommand<string>(generacion1Execute);
+            // botonGeneracion2 = new DelegateCommand<int>(generacion2Execute);
+            //botonGeneracion3 = new DelegateCommand(generacion3Execute);
+            //botonGeneracionTodas = new DelegateCommand(generacionTodasExecute);
         }
         #endregion
 
@@ -82,7 +82,7 @@ namespace MAUI.VM
         /// <summary>
         /// Método asociado al execute del comando botonGeneracion1 que navega a la página de Partida con la Primera Generación
         /// </summary>
-        private async void generacion1Execute()
+        private async void generacion1Execute(string generacion)
         {
             List<clsPokemon> listadoPokemonPartida;
 

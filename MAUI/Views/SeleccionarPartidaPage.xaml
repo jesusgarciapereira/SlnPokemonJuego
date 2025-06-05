@@ -16,9 +16,12 @@
                    HorizontalOptions="Center" />
 
             <Button Text="Primera Generación"
-                    Command="{Binding BotonGeneracion1}" />
+                    Command="{Binding BotonGeneracion1}"
+                    CommandParameter="1"/>
             <Button Text="Segunda Generación"
-                    Command="{Binding BotonGeneracion2}" />
+                    Command="{Binding BotonGeneracion1}"
+                    CommandParameter="2"
+                    />
             <Button Text="Tercera Generación"
                     Command="{Binding BotonGeneracion3}" />
             <Button Text="TODAS"
