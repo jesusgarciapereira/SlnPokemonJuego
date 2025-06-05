@@ -17,7 +17,7 @@
         <!-- Opciones como tabla 2x2 -->
         <CollectionView ItemsSource="{Binding PreguntaActual.Opciones}" 
                         SelectionMode="Single"
-                        SelectedItem="{Binding PokemonSeleccionado, Mode=TwoWay}">
+                        SelectedItem="{Binding PreguntaActual.PokemonSeleccionado, Mode=TwoWay}">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical"
                                  Span="2" />

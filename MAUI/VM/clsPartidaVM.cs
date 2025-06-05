@@ -64,11 +64,7 @@ namespace MAUI.VM
             this.cantPreguntas = 20;
             this.listaPreguntas = GeneraPreguntas(listaPokemonPartida, cantPreguntas, preguntaActual.CantOpciones);
 
-            for (int i = 0; i < listaPreguntas.Count(); i++) 
-            {
-                this.preguntaActual = listaPreguntas[i];
-                // Notificar y esperar 5 segundos
-            }
+            MostrarPreguntasPorSegundos(preguntaActual.Tiempo);
             
         }
         #endregion
@@ -163,6 +159,24 @@ namespace MAUI.VM
             return preguntas;
         }
 
+        /// <summary>
+        /// Muestra cada pregunta de la lista durante un número determinado de segundos.
+        /// </summary>
+        /// Pre: La lista de preguntas debe estar previamente generada y contener elementos.
+        /// Post: Se muestra una pregunta a la vez, actualizando la propiedad 'PreguntaActual' cada intervalo de tiempo.
+        /// <param name="segundos">Cantidad de segundos que se muestra cada pregunta antes de pasar a la siguiente.</param>
+        /// <returns>Una tarea asincrónica que gestiona la temporización entre preguntas.</returns>
+        private async Task MostrarPreguntasPorSegundos(int segundos)
+        {
+            for (int i = 0; i < listaPreguntas.Count; i++)
+            {
+                this.preguntaActual = listaPreguntas[i];
+
+                NotifyPropertyChanged(nameof(PreguntaActual));
+
+                await Task.Delay(segundos * 1000);
+            }
+        }
 
         #endregion
     }
