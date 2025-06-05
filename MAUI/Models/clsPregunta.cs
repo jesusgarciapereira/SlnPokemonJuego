@@ -65,7 +65,7 @@ namespace MAUI.Models
             this.pokemonPreguntado = pokemonPreguntado;
             this.opciones = opciones;
 
-            temporizador = Application.Current.Dispatcher.CreateTimer();
+            this.temporizador = Application.Current.Dispatcher.CreateTimer();
             temporizador.Interval = TimeSpan.FromSeconds(1); // Intervalo de segundos
             temporizador.Tick += RestarContador; // Lo que hacemos en cada segundo, evento RestarContador
 
@@ -95,10 +95,17 @@ namespace MAUI.Models
             else
             {
                 temporizador.Stop();
+
+                tiempo = 5;
+                NotifyPropertyChanged(nameof(Tiempo));
+
+                temporizador.Start();
             }
         }
+        #endregion
+
     }
-    #endregion
+
 
 
 }

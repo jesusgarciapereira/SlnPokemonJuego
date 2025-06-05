@@ -78,7 +78,7 @@ namespace MAUI.VM
             this.cantPreguntas = 20;
             this.listaPreguntas = GeneraPreguntas(listaPokemonPartida, cantPreguntas, preguntaActual.CantOpciones);
 
-            MostrarPreguntasPorSegundos(preguntaActual.Tiempo);
+            MostrarPreguntasPorSegundos(preguntaActual.Tiempo + 1);
             
         }
         #endregion
@@ -193,7 +193,24 @@ namespace MAUI.VM
             }
         }
 
-        
+
+        //private void MostrarPreguntasPorSegundos()
+        //{
+        //    int indice = 0;
+
+        //    this.preguntaActual = listaPreguntas[indice];
+        //    NotifyPropertyChanged(nameof(PreguntaActual));
+
+        //    if (preguntaActual.Tiempo == 0)
+        //    {
+        //        indice++;
+
+        //        this.preguntaActual = listaPreguntas[indice];
+        //        NotifyPropertyChanged(nameof(PreguntaActual));
+        //    }
+
+        //}
+
         #endregion
     }
 
