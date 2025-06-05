@@ -11,10 +11,10 @@ public partial class PartidaPage : ContentPage
 		InitializeComponent();
 	}
 
-    public PartidaPage(List<clsPokemon> listadoPokemonPartida)
+    public PartidaPage(List<clsPokemon> listaPokemonPartida)
     {
         InitializeComponent();
-        BindingContext = new clsPartidaVM(listadoPokemonPartida);
+        BindingContext = new clsPartidaVM(listaPokemonPartida);
 
     }
 }

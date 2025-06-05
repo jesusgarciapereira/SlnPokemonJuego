@@ -18,6 +18,7 @@ namespace MAUI.VM
         // private List<clsPokemon> listaOpcionesTotales; // Creo que no se Bindea
         private List<clsPregunta> listaPreguntas;
         private clsPregunta preguntaActual;
+        private int puntosTotales;
         private int cantPreguntas;
         #endregion
 
@@ -40,6 +41,11 @@ namespace MAUI.VM
         public clsPregunta PreguntaActual
         {
             get { return preguntaActual; }
+        }
+
+        public int PuntosTotales
+        {
+            get { return puntosTotales; }
         }
 
         public int CantPreguntas
@@ -177,6 +183,8 @@ namespace MAUI.VM
                 await Task.Delay(segundos * 1000);
             }
         }
+
+        
 
         #endregion
     }

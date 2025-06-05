@@ -7,26 +7,46 @@
 
     <VerticalStackLayout Padding="20">
 
-        <!-- Imagen del Pokémon preguntado -->
-        <Image Source="{Binding PreguntaActual.PokemonPreguntado.Imagen}"
-           HeightRequest="150"
-           WidthRequest="150"
-           HorizontalOptions="Center"
-           Margin="0,20,0,10" />
+        <!-- Tiempo, Imagen y PuntosTotales alineados horizontalmente -->
+        <Grid Margin="0,20,0,10"
+              ColumnDefinitions="Auto,*,Auto"
+              VerticalOptions="Center">
+
+            <!-- Tiempo -->
+            <Label Grid.Column="0"
+                   Text="{Binding PreguntaActual.Tiempo, StringFormat='Tiempo: {0}s'}"
+                   FontSize="20"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start" />
+
+            <!-- Imagen del Pokémon preguntado -->
+            <Image Grid.Column="1"
+                   Source="{Binding PreguntaActual.PokemonPreguntado.Imagen}"
+                   HeightRequest="150"
+                   WidthRequest="150"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center" />
+
+            <!-- Puntos Totales -->
+            <Label Grid.Column="2"
+                   Text="{Binding PuntosTotales, StringFormat='Puntos: {0}'}"
+                   FontSize="20"
+                   VerticalOptions="Center"
+                   HorizontalOptions="End" />
+
+        </Grid>
 
         <!-- Opciones como tabla 2x2 -->
         <CollectionView ItemsSource="{Binding PreguntaActual.Opciones}" 
                         SelectionMode="Single"
                         SelectedItem="{Binding PreguntaActual.PokemonSeleccionado, Mode=TwoWay}">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical"
-                                 Span="2" />
+                <GridItemsLayout Orientation="Vertical" Span="2" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame BorderColor="LightGray"
-                           CornerRadius="12"
+                    <Frame CornerRadius="12"
                            Padding="10"
                            Margin="5"
                            BackgroundColor="LightYellow">
