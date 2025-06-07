@@ -184,12 +184,31 @@ namespace MAUI.VM
         {
             for (int i = 0; i < listaPreguntas.Count; i++)
             {
-
-                this.preguntaActual = listaPreguntas[i];
-
+                this.preguntaActual = new clsPregunta(listaPreguntas[i].PokemonPreguntado, listaPreguntas[i].Opciones);
+                
                 NotifyPropertyChanged(nameof(PreguntaActual));
 
                 await Task.Delay(segundos * 1000);
+
+                AsignaPuntos();
+            }
+        }
+
+        private void AsignaPuntos() 
+        
+        {
+            if (preguntaActual.PokemonSeleccionado != null)
+            {
+                if (preguntaActual.EsCorrecto)
+                {
+                    this.puntosTotales += preguntaActual.Tiempo;
+                }
+                else 
+                {
+                    this.puntosTotales -= 1;
+                }
+
+                NotifyPropertyChanged(nameof(PuntosTotales));
             }
         }
 

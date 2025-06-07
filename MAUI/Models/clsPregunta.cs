@@ -12,12 +12,12 @@ namespace MAUI.Models
     public class clsPregunta : INotifyPropertyChanged
     {
         #region Atributos
-        clsPokemon pokemonPreguntado;
-        List<clsPokemon> opciones;
-        clsPokemon pokemonSeleccionado;
-        bool esCorrecto;
-        int tiempo;
-        int cantOpciones;
+        private clsPokemon pokemonPreguntado;
+        private List<clsPokemon> opciones;
+        private clsPokemon pokemonSeleccionado;
+        private bool esCorrecto;
+        private int tiempo;
+        private int cantOpciones;
         private IDispatcherTimer temporizador;
         #endregion
 
@@ -33,11 +33,32 @@ namespace MAUI.Models
         public clsPokemon PokemonSeleccionado
         {
             get { return pokemonSeleccionado; }
-            set { pokemonSeleccionado = value; }
+            set
+            {
+                pokemonSeleccionado = value;
+                NotifyPropertyChanged(nameof(PokemonSeleccionado));
+
+                if (pokemonSeleccionado != null)
+                {
+                    temporizador.Stop();
+                }
+            }
         }
         public bool EsCorrecto
         {
-            get { return esCorrecto; }
+            get
+            {
+                //this.esCorrecto = false;
+
+                //if (pokemonPreguntado.Equals(pokemonSeleccionado))
+                //{
+                //    this.esCorrecto = true;
+                //}
+
+                //return esCorrecto;
+
+                return pokemonPreguntado.Equals(pokemonSeleccionado);
+            }
         }
         public int Tiempo
         {
@@ -96,10 +117,11 @@ namespace MAUI.Models
             {
                 temporizador.Stop();
 
-                tiempo = 5;
-                NotifyPropertyChanged(nameof(Tiempo));
+                // No sé si hace falta esto
+                //tiempo = 5;
+                //NotifyPropertyChanged(nameof(Tiempo));
 
-                temporizador.Start();
+                //temporizador.Start();
             }
         }
         #endregion
