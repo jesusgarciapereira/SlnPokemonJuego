@@ -3,23 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:MAUI.VM"
              x:Class="MAUI.Views.MenuPage"
-             Title="MenuPage">
-    
+             Title="Pokémon Advanced"
+             BackgroundColor="#f2f2f2">
+
     <ContentPage.BindingContext>
         <vm:clsMenuVM />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <VerticalStackLayout Padding="20">
-            <Label Text="Pokémon Advance"
-                   FontSize="24"
+        <VerticalStackLayout Padding="30" Spacing="25" BackgroundColor="#F5F5DC">
+
+            <!--
+            <Label Text="Pokémon Advanced"
+                   FontSize="36"
+                   FontFamily="PokemonFuente"
+                   TextColor="#C62828"
                    HorizontalOptions="Center" />
-            
+-->
+            <Image Source="pokemon_advanced_title.png"
+                   WidthRequest="300"
+                   HeightRequest="200"
+                   HorizontalOptions="Center"/>
+
             <Button Text="Seleccionar Partida"
-                    Command="{Binding BotonSeleccionarPartida}" />
+                    Command="{Binding BotonSeleccionarPartida}"
+                    FontFamily="GameBoyFuente"
+                    BackgroundColor="#FFEB3B"
+                    TextColor="Black"
+                    CornerRadius="12"
+                    Padding="12"/>
+
             <Button Text="Ranking"
-                    Command="{Binding BotonRanking}" />
-            
+                    Command="{Binding BotonRanking}"
+                    FontFamily="GameBoyFuente"
+                    BackgroundColor="#81D4FA"
+                    TextColor="Black"
+                    CornerRadius="12"
+                    Padding="12"/>
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

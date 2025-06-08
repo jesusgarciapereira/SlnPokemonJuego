@@ -21,6 +21,7 @@ namespace MAUI.VM
         // private List<clsPokemon> listaOpcionesTotales; // Creo que no se Bindea
         private List<clsPregunta> listaPreguntas;
         private clsPregunta preguntaActual;
+        private int numRonda;
         private int puntosTotales;
         private int cantPreguntas;
         private clsJugador jugador;
@@ -45,6 +46,11 @@ namespace MAUI.VM
         public clsPregunta PreguntaActual
         {
             get { return preguntaActual; }
+        }
+
+        public int NumRonda
+        {
+            get { return numRonda; }
         }
 
         public int PuntosTotales
@@ -78,11 +84,11 @@ namespace MAUI.VM
             this.preguntaActual = new clsPregunta();
 
             this.cantPreguntas = 20;
-            this.listaPreguntas = GeneraPreguntas(listaPokemonPartida, cantPreguntas, preguntaActual.CantOpciones);
+            this.listaPreguntas = CreaPreguntas(listaPokemonPartida, cantPreguntas, preguntaActual.CantOpciones);
 
             MostrarPreguntas();
 
-            
+
         }
         #endregion
 
@@ -142,7 +148,7 @@ namespace MAUI.VM
         }
 
         /// <summary>
-        /// Genera una lista de preguntas para la partida, donde cada pregunta contiene un Pokémon preguntado
+        /// Crea una lista de preguntas para la partida, donde cada pregunta contiene un Pokémon preguntado
         /// y un conjunto de opciones de respuesta.
         /// </summary>
         /// Pre: La lista original de Pokémon debe contener suficientes elementos para generar 
@@ -155,7 +161,7 @@ namespace MAUI.VM
         /// Una lista de objetos clsPregunta, cada uno con un Pokémon preguntado y su lista de opciones.
         /// Las opciones no se repiten entre preguntas.
         /// </returns>
-        private List<clsPregunta> GeneraPreguntas(List<clsPokemon> listaPokemonPartida, int cantPreguntas, int cantOpciones)
+        private List<clsPregunta> CreaPreguntas(List<clsPokemon> listaPokemonPartida, int cantPreguntas, int cantOpciones)
         {
             List<clsPokemon> listaOpcionesTotales = ObtenerPokemonAleatorios(listaPokemonPartida, cantPreguntas * preguntaActual.CantOpciones);
 
@@ -201,6 +207,10 @@ namespace MAUI.VM
 
                 NotifyPropertyChanged(nameof(PreguntaActual));
 
+                this.numRonda = i + 1;
+
+                NotifyPropertyChanged(nameof(NumRonda));
+
                 while (preguntaActual.PokemonSeleccionado == null && preguntaActual.Tiempo > 0)
                 {
                     await Task.Delay(100); // Espera 100ms antes de volver a comprobar
@@ -215,23 +225,25 @@ namespace MAUI.VM
 
         private void AsignaPuntos()
         {
-            if (preguntaActual.EsCorrecto)
+            if (preguntaActual.PokemonSeleccionado != null)
             {
-                this.puntosTotales += preguntaActual.Tiempo;
-            }
-            else
-            {
-                this.puntosTotales -= 1;
-            }
+                if (preguntaActual.EsCorrecto)
+                {
+                    this.puntosTotales += preguntaActual.Tiempo;
+                }
+                else
+                {
+                    this.puntosTotales -= 1;
+                }
 
-            NotifyPropertyChanged(nameof(PuntosTotales));
-
+                NotifyPropertyChanged(nameof(PuntosTotales));
+            }
         }
 
-        private async Task GuardarJugadorPartida() 
+        private async Task GuardarJugadorPartida()
         {
 
-            this.jugador = new clsJugador("Probando", this.puntosTotales);
+            this.jugador = new clsJugador("Probadita", this.puntosTotales);
 
             HttpStatusCode estado = await clsJugadorService.GuardarJugadorService(this.jugador);
 

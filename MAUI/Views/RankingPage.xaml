@@ -3,49 +3,62 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:MAUI.VM"
              x:Class="MAUI.Views.RankingPage"
-             Title="RankingPage">
+             Title="Ranking">
 
     <ContentPage.BindingContext>
         <vm:clsRankingVM />
     </ContentPage.BindingContext>
 
+    <StackLayout Padding="20" Spacing="15" BackgroundColor="#F5F5DC">
 
-    <StackLayout Padding="20" Spacing="15">
+        <Label Text="🏆 Ranking de Entrenadores"
+               FontSize="28"
+               FontFamily="PokemonFuente"
+               HorizontalOptions="Center"
+               TextColor="#FF6F00"/>
 
         <Button Text="Actualizar Ranking"
-            Command="{Binding BotonActualizar}" />
+                Command="{Binding BotonActualizar}"
+                FontFamily="GameBoyFuente"
+                BackgroundColor="#AED581"
+                TextColor="Black"
+                CornerRadius="10" />
 
-        <ActivityIndicator IsRunning="{Binding Cargando}" IsVisible="{Binding Cargando}"/>
+        <ActivityIndicator IsRunning="{Binding Cargando}" IsVisible="{Binding Cargando}" />
 
         <Label Text="No hay Jugadores disponibles en la Base de Datos"
-           TextColor="Red"
-           FontAttributes="Bold"
-           IsVisible="{Binding ListaVacia}"
-           HorizontalOptions="Center" />
+               TextColor="Red"
+               FontAttributes="Bold"
+               FontFamily="GameBoyFuente"
+               IsVisible="{Binding ListaVacia}"
+               HorizontalOptions="Center" />
 
         <ListView ItemsSource="{Binding ListaJugadoresVisible}" 
-              HasUnevenRows="True"
-              SeparatorVisibility="Default">
+                  HasUnevenRows="True"
+                  SeparatorVisibility="None"
+                  BackgroundColor="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" Margin="5">
+                        <Frame BorderColor="#90CAF9" 
+                               CornerRadius="12"
+                               Padding="10"
+                               Margin="5"
+                               BackgroundColor="#E3F2FD">
                             <StackLayout>
-                                <Label Text="{Binding Id}" 
-                                   FontAttributes="Bold"
-                                   FontSize="18"/>
                                 <Label Text="{Binding Nick}" 
-                                    FontAttributes="Bold"
-                                    FontSize="18"/>
+                                       FontFamily="GameBoyFuente"
+                                       FontSize="20"
+                                       TextColor="#1976D2"/>
                                 <Label Text="{Binding Puntuacion}" 
-                                    FontAttributes="Bold"
-                                    FontSize="18"/>
+                                       FontFamily="GameBoyFuente"
+                                       FontSize="18"
+                                       TextColor="#388E3C"/>
                             </StackLayout>
                         </Frame>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
     </StackLayout>
 </ContentPage>

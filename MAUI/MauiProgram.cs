@@ -13,6 +13,11 @@ namespace MAUI
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+
+                    // Anniadidos por mi
+                    fonts.AddFont("Pokemon Solid.ttf", "PokemonFuente");
+                    fonts.AddFont("PressStart2P-Regular.ttf", "GameBoyFuente");
+
                 });
 
 #if DEBUG

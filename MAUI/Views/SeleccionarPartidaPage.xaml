@@ -3,30 +3,52 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:MAUI.VM"
              x:Class="MAUI.Views.SeleccionarPartidaPage"
-             Title="SeleccionarPartidaPage">
-    
+             Title="Seleccionar Generación">
+
     <ContentPage.BindingContext>
         <vm:clsSeleccionarPartidaPageVM />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <VerticalStackLayout Padding="20">
-            <Label Text="Pokémon Advance"
-                   FontSize="24"
-                   HorizontalOptions="Center" />
+        <VerticalStackLayout Padding="30" Spacing="20" BackgroundColor="#F5F5DC">
+
+            <Label Text="Selecciona una Generación"
+                   FontSize="28"
+                   FontFamily="PokemonFuente"
+                   HorizontalOptions="Center"
+                   TextColor="#388E3C"/>
 
             <Button Text="Primera Generación"
                     Command="{Binding BotonGeneracion}"
-                    CommandParameter="1"/>
+                    CommandParameter="1"
+                    FontFamily="GameBoyFuente"
+                    BackgroundColor="#FFCDD2"
+                    TextColor="#B71C1C"
+                    CornerRadius="12"/>
+
             <Button Text="Segunda Generación"
                     Command="{Binding BotonGeneracion}"
-                    CommandParameter="2"/>
+                    CommandParameter="2"
+                    FontFamily="GameBoyFuente"
+                    BackgroundColor="#C5CAE9"
+                    TextColor="#1A237E"
+                    CornerRadius="12"/>
+
             <Button Text="Tercera Generación"
-                    Command="{Binding BotonGeneracion}" 
-                    CommandParameter="3"/>
+                    Command="{Binding BotonGeneracion}"
+                    CommandParameter="3"
+                    FontFamily="GameBoyFuente"
+                    BackgroundColor="#B2EBF2"
+                    TextColor="#006064"
+                    CornerRadius="12"/>
+
             <Button Text="TODAS"
                     Command="{Binding BotonGeneracion}"
-                    CommandParameter="0"/>
+                    CommandParameter="0"
+                    FontFamily="GameBoyFuente"
+                    BackgroundColor="#FFF176"
+                    TextColor="#F57F17"
+                    CornerRadius="12"/>
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>
