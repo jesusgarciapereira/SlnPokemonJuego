@@ -1,5 +1,6 @@
 ﻿using DTO;
 using MAUI.Models;
+using SERVICE;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,8 +8,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-
+using System.Net;
 
 namespace MAUI.VM
 {
@@ -21,8 +23,7 @@ namespace MAUI.VM
         private clsPregunta preguntaActual;
         private int puntosTotales;
         private int cantPreguntas;
-
-
+        private clsJugador jugador;
         #endregion
 
         #region Propiedades
@@ -56,9 +57,10 @@ namespace MAUI.VM
             get { return cantPreguntas; }
         }
 
-
-
-
+        public clsJugador Jugador
+        {
+            get { return jugador; }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -80,7 +82,7 @@ namespace MAUI.VM
 
             MostrarPreguntas();
 
-            // TODO: Ir a nueva página para pedir el nombre
+            
         }
         #endregion
 
@@ -94,6 +96,16 @@ namespace MAUI.VM
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Muestra un mensaje emergente.
+        /// </summary>
+        /// <param name="titulo">Título del mensaje.</param>
+        /// <param name="cuerpo">Cuerpo del mensaje.</param>
+        /// <param name="boton">Texto del botón de cierre.</param>
+        private async void muestraMensaje(string titulo, string cuerpo, string boton)
+        {
+            await Application.Current.MainPage.DisplayAlert(titulo, cuerpo, boton);
+        }
 
         /// <summary>
         /// Devuelve una selección aleatoria de Pokémon sin repetir.
@@ -197,6 +209,8 @@ namespace MAUI.VM
                 AsignaPuntos();
 
             }
+
+            GuardarJugadorPartida();
         }
 
         private void AsignaPuntos()
@@ -212,6 +226,27 @@ namespace MAUI.VM
 
             NotifyPropertyChanged(nameof(PuntosTotales));
 
+        }
+
+        private async Task GuardarJugadorPartida() 
+        {
+
+            this.jugador = new clsJugador("Probando", this.puntosTotales);
+
+            HttpStatusCode estado = await clsJugadorService.GuardarJugadorService(this.jugador);
+
+            if ((int)estado == 200)
+            {
+                muestraMensaje("Éxito", $"Puntuacion de \"{this.jugador.Nick}\" = {this.jugador.Puntuacion} guardada correctamente", "Aceptar");
+            }
+            else if ((int)estado == 400)
+            {
+                muestraMensaje("Error de envío", "La información enviada no es válida. Por favor, revisa los campos e inténtalo de nuevo.", "Aceptar");
+            }
+            else if ((int)estado == 404)
+            {
+                muestraMensaje("No encontrado", "No se ha encontrado el recurso solicitado. Es posible que ya no exista o que haya un error en la dirección.", "Aceptar");
+            }
         }
 
 

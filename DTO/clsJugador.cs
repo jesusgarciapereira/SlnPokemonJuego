@@ -44,6 +44,11 @@ namespace DTO
         {
             this.id = id;
         }
+        public clsJugador(string nick, int puntuacion)
+        {
+            this.nick = nick;
+            this.puntuacion = puntuacion;
+        }
 
         public clsJugador(int id, string nick, int puntuacion)
         {
