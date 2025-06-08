@@ -117,7 +117,7 @@ namespace MAUI.Models
             {
                 temporizador.Stop();
 
-                // No sé si hace falta esto
+                // Esto creo que no hace falta
                 //tiempo = 5;
                 //NotifyPropertyChanged(nameof(Tiempo));
 
