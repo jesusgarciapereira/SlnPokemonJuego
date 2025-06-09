@@ -39,10 +39,10 @@ namespace MAUI.VM
         //    get { return listaOpcionesTotales; }
         //}
 
-        public List<clsPregunta> ListaPreguntas
-        {
-            get { return listaPreguntas; }
-        }
+        //public List<clsPregunta> ListaPreguntas
+        //{
+        //    get { return listaPreguntas; }
+        //}
 
         public clsPregunta PreguntaActual
         {
@@ -87,7 +87,7 @@ namespace MAUI.VM
             this.cantPreguntas = 20;
             this.listaPreguntas = CreaPreguntas(listaPokemonPartida, cantPreguntas, preguntaActual.CantOpciones);
 
-            MostrarPreguntas();
+            EjecutarPartida();
 
             
         }
@@ -208,7 +208,7 @@ namespace MAUI.VM
         /// Post: Se muestra una pregunta a la vez, actualizando la propiedad 'PreguntaActual' cada intervalo de tiempo.
         /// <param name="segundos">Cantidad de segundos que se muestra cada pregunta antes de pasar a la siguiente.</param>
         /// <returns>Una tarea asincrónica que gestiona la temporización entre preguntas.</returns>
-        private async Task MostrarPreguntas()
+        private async Task EjecutarPartida()
         {
             for (int i = 0; i < listaPreguntas.Count; i++)
             {
