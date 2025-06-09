@@ -7,68 +7,92 @@
 
     <VerticalStackLayout Padding="20" BackgroundColor="#F5F5DC">
 
-        <Label Text="{Binding NumRonda, StringFormat='Ronda: {0}'}"
-               FontSize="24"
+        <Label Text="{Binding NumRonda, StringFormat='Ronda {0}'}"
+               FontSize="48"
                FontFamily="PokemonFuente"
                HorizontalOptions="Center"
-               TextColor="#F57F17"/>
+               TextColor="#FF6F00"/>
 
         <Grid Margin="0,20,0,10"
-              ColumnDefinitions="Auto,*,Auto"
-              VerticalOptions="Center">
+      ColumnDefinitions="*,*,*"
+      VerticalOptions="Center"
+      HorizontalOptions="FillAndExpand">
 
-            <!-- Tiempo -->
-            <Label Grid.Column="0"
-                   Text="{Binding PreguntaActual.Tiempo, StringFormat='Tiempo: {0}s'}"
-                   FontSize="18"
-                   FontFamily="GameBoyFuente"
-                   TextColor="#D32F2F"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Start" />
+            <!-- Tiempo (Izquierda) -->
+            <VerticalStackLayout Grid.Column="0"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         Spacing="2">
+                <Label Text="Tiempo"
+               FontSize="24"
+               FontFamily="GameBoyFuente"
+               TextColor="#D32F2F"
+               HorizontalOptions="Center" />
+                <Label Text="{Binding PreguntaActual.Tiempo}"
+               FontSize="48"
+               FontFamily="GameBoyFuente"
+               TextColor="#D32F2F"
+               HorizontalOptions="Center" />
+            </VerticalStackLayout>
 
-            <!-- Imagen -->
+            <!-- Imagen (Centro) -->
             <Image Grid.Column="1"
-                   Source="{Binding PreguntaActual.PokemonPreguntado.Imagen}"
-                   HeightRequest="300"
-                   WidthRequest="300"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"/>
+           Source="{Binding PreguntaActual.PokemonPreguntado.Imagen}"
+           HeightRequest="300"
+           WidthRequest="300"
+           HorizontalOptions="Center"
+           VerticalOptions="Center"/>
 
-            <!-- Puntos Totales -->
-            <Label Grid.Column="2"
-                   Text="{Binding PuntosTotales, StringFormat='Puntos: {0}'}"
-                   FontSize="18"
-                   FontFamily="GameBoyFuente"
-                   TextColor="#388E3C"
-                   VerticalOptions="Center"
-                   HorizontalOptions="End" />
+            <!-- Puntos Totales (Derecha) -->
+            <VerticalStackLayout Grid.Column="2"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         Spacing="2">
+                <Label Text="Puntos"
+               FontSize="24"
+               FontFamily="GameBoyFuente"
+               TextColor="#388E3C"
+               HorizontalOptions="Center" />
+                <Label Text="{Binding PuntosTotales}"
+               FontSize="48"
+               FontFamily="GameBoyFuente"
+               TextColor="#388E3C"
+               HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
         </Grid>
+
+
 
         <!-- Opciones -->
         <CollectionView ItemsSource="{Binding PreguntaActual.Opciones}" 
-                        SelectionMode="Single"
-                        SelectedItem="{Binding PreguntaActual.PokemonSeleccionado, Mode=TwoWay}">
+                SelectionMode="Single"
+                SelectedItem="{Binding PreguntaActual.PokemonSeleccionado, Mode=TwoWay}">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="2" />
+                <GridItemsLayout Orientation="Vertical"
+                         Span="2"
+                         VerticalItemSpacing="10"
+                         HorizontalItemSpacing="10" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame CornerRadius="12"
-                           Padding="10"
-                           Margin="5"
-                           BackgroundColor="#FFF9C4"
-                           BorderColor="#FBC02D">
+                   Padding="10"
+                   Margin="5"
+                   BackgroundColor="#FFF9C4"
+                   BorderColor="#FBC02D">
                         <Label Text="{Binding Nombre}"
-                               FontSize="18"
-                               FontFamily="GameBoyFuente"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center"
-                               TextColor="#5D4037" />
+                       FontSize="24"
+                       FontFamily="GameBoyFuente"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="#5D4037" />
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
 
     </VerticalStackLayout>
 </ContentPage>

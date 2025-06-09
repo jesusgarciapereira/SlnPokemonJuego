@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MAUI.VM
 {
-    public class clsSeleccionarPartidaPageVM
+    public class clsSeleccionarPartidaVM
     {
         #region Atributos
         private DelegateCommand<string> botonGeneracion;
@@ -29,7 +29,7 @@ namespace MAUI.VM
         #endregion
 
         #region Constructores
-        public clsSeleccionarPartidaPageVM()
+        public clsSeleccionarPartidaVM()
         {
             botonGeneracion = new DelegateCommand<string>(generacionExecute);
         }

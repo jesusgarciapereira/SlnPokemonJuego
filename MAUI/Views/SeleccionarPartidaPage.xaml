@@ -6,19 +6,19 @@
              Title="Seleccionar Generación">
 
     <ContentPage.BindingContext>
-        <vm:clsSeleccionarPartidaPageVM />
+        <vm:clsSeleccionarPartidaVM />
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
         <VerticalStackLayout Padding="30" Spacing="20" BackgroundColor="#F5F5DC">
 
             <Label Text="Selecciona una Generación"
-                   FontSize="28"
+                   FontSize="48"
                    FontFamily="PokemonFuente"
                    HorizontalOptions="Center"
-                   TextColor="#388E3C"/>
+                   TextColor="#FF6F00"/>
 
-            <Button Text="Primera Generación"
+            <Button Text="1º Kanto"
                     Command="{Binding BotonGeneracion}"
                     CommandParameter="1"
                     FontFamily="GameBoyFuente"
@@ -26,7 +26,7 @@
                     TextColor="#B71C1C"
                     CornerRadius="12"/>
 
-            <Button Text="Segunda Generación"
+            <Button Text="2º Johto"
                     Command="{Binding BotonGeneracion}"
                     CommandParameter="2"
                     FontFamily="GameBoyFuente"
@@ -34,7 +34,7 @@
                     TextColor="#1A237E"
                     CornerRadius="12"/>
 
-            <Button Text="Tercera Generación"
+            <Button Text="3º Hoenn"
                     Command="{Binding BotonGeneracion}"
                     CommandParameter="3"
                     FontFamily="GameBoyFuente"

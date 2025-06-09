@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Net;
+using MAUI.Views;
 
 namespace MAUI.VM
 {
@@ -88,7 +89,7 @@ namespace MAUI.VM
 
             MostrarPreguntas();
 
-
+            
         }
         #endregion
 
@@ -100,6 +101,14 @@ namespace MAUI.VM
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// Navega hacia la página indicada en el parámetro.
+        /// </summary>
+        private async void navegar(Page pagina)
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(pagina);
         }
 
         /// <summary>
@@ -221,8 +230,13 @@ namespace MAUI.VM
             }
 
             GuardarJugadorPartida();
+
+            navegar(new MenuPage());
         }
 
+        /// <summary>
+        /// Asigna los puntos totales de la partida cada vez que se responde una pregunta
+        /// </summary>
         private void AsignaPuntos()
         {
             if (preguntaActual.PokemonSeleccionado != null)
@@ -240,10 +254,14 @@ namespace MAUI.VM
             }
         }
 
+        /// <summary>
+        /// Guarda la Partida del jugador llamando a la API
+        /// </summary>
+        /// <returns></returns>
         private async Task GuardarJugadorPartida()
         {
 
-            this.jugador = new clsJugador("Probadita", this.puntosTotales);
+            this.jugador = new clsJugador("Jesús", this.puntosTotales);
 
             HttpStatusCode estado = await clsJugadorService.GuardarJugadorService(this.jugador);
 
