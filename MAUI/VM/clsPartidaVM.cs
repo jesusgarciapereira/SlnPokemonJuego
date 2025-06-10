@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Net;
 using MAUI.Views;
+using MAUI.VM.Utils;
 
 namespace MAUI.VM
 {
@@ -25,8 +26,18 @@ namespace MAUI.VM
         private int numRonda;
         private int puntosTotales;
         private int cantPreguntas;
-        private clsJugador jugador;
+        // private clsJugador jugador;
+        private string nickJugador;
+        private bool partidaVisible;
+        private bool formularioVisible;
+
+        private DelegateCommand botonGuardar;
+
+
         #endregion
+
+        
+
 
         #region Propiedades
         //public List<clsPokemon> ListaPokemonGeneracion
@@ -39,6 +50,7 @@ namespace MAUI.VM
         //    get { return listaOpcionesTotales; }
         //}
 
+        // Esto no se bindea con nada
         //public List<clsPregunta> ListaPreguntas
         //{
         //    get { return listaPreguntas; }
@@ -64,10 +76,35 @@ namespace MAUI.VM
             get { return cantPreguntas; }
         }
 
-        public clsJugador Jugador
+        public string NickJugador
         {
-            get { return jugador; }
+            get { return nickJugador; }
+            set 
+            { 
+                nickJugador = value;
+                botonGuardar.RaiseCanExecuteChanged();
+            }
         }
+        //public clsJugador Jugador
+        //{
+        //    get { return jugador; }
+        //}
+
+        public bool PartidaVisible
+        {
+            get { return partidaVisible; }
+        }
+
+        public bool FormularioVisible
+        {
+            get { return formularioVisible; }
+        }
+
+        public DelegateCommand BotonGuardar
+        {
+            get { return botonGuardar; }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -81,6 +118,8 @@ namespace MAUI.VM
 
         public clsPartidaVM(List<clsPokemon> listaPokemonPartida)
         {
+            this.botonGuardar = new DelegateCommand(guardarJugadorPartidaExecute, habilitarGuardar);
+
             // this.listaPokemonGeneracion = listaPokemonGeneracion;
             this.preguntaActual = new clsPregunta();
 
@@ -210,6 +249,8 @@ namespace MAUI.VM
         /// <returns>Una tarea asincrónica que gestiona la temporización entre preguntas.</returns>
         private async Task EjecutarPartida()
         {
+            partidaVisible = true;
+
             for (int i = 0; i < listaPreguntas.Count; i++)
             {
                 this.preguntaActual = new clsPregunta(listaPreguntas[i].PokemonPreguntado, listaPreguntas[i].Opciones);
@@ -229,9 +270,14 @@ namespace MAUI.VM
 
             }
 
-            GuardarJugadorPartida();
+            partidaVisible = false;
+            NotifyPropertyChanged(nameof(PartidaVisible));
 
-            navegar(new MenuPage());
+            formularioVisible = true;
+            NotifyPropertyChanged(nameof(FormularioVisible));
+
+            // GuardarJugadorPartida();
+            // navegar(new MenuPage());
         }
 
         /// <summary>
@@ -260,14 +306,13 @@ namespace MAUI.VM
         /// <returns></returns>
         private async Task GuardarJugadorPartida()
         {
+            clsJugador jugador = new clsJugador(this.nickJugador, this.puntosTotales);
 
-            this.jugador = new clsJugador("Jesús", this.puntosTotales);
-
-            HttpStatusCode estado = await clsJugadorService.GuardarJugadorService(this.jugador);
+            HttpStatusCode estado = await clsJugadorService.GuardarJugadorService(jugador);
 
             if ((int)estado == 200)
             {
-                muestraMensaje("Éxito", $"Puntuacion de \"{this.jugador.Nick}\" = {this.jugador.Puntuacion} guardada correctamente", "Aceptar");
+                muestraMensaje("Éxito", $"Puntuacion de \"{this.nickJugador}\" = {this.puntosTotales} guardada correctamente", "Aceptar");
             }
             else if ((int)estado == 400)
             {
@@ -296,6 +341,31 @@ namespace MAUI.VM
         //    }
 
         //}
+
+        #endregion
+
+        #region Comandos
+
+
+        private void guardarJugadorPartidaExecute()
+        {
+            GuardarJugadorPartida();
+
+            navegar(new MenuPage());
+        }
+
+        private bool habilitarGuardar()
+        {
+            bool habilitado = false;
+
+            if (nickJugador != null && !nickJugador.Equals(""))
+            {
+                habilitado = true;
+            }
+
+            return habilitado;
+
+        }
 
         #endregion
     }
