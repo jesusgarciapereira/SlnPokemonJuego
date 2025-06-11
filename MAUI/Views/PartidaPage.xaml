@@ -73,7 +73,7 @@
             <CollectionView Grid.Row="2" Grid.ColumnSpan="3"
                             ItemsSource="{Binding PreguntaActual.Opciones}" 
                             SelectionMode="Single"
-                            SelectedItem="{Binding PreguntaActual.PokemonSeleccionado, Mode=TwoWay}">
+                            SelectedItem="{Binding PokemonSeleccionado, Mode=TwoWay}">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
                                      Span="2"
@@ -87,7 +87,7 @@
                                Padding="10"
                                Margin="5"               
                                BackgroundColor="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, 
-                         Path=BindingContext.PreguntaActual, 
+                         Path=BindingContext.PreguntaActual.PokemonSeleccionado, 
                          Converter={StaticResource colorBackgroundRespuesta}}"
                                BorderColor="#FBC02D">
                             <Label Text="{Binding Nombre}"

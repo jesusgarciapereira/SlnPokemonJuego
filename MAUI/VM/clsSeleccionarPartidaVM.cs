@@ -72,7 +72,7 @@ namespace MAUI.VM
         private async void generacionExecute(string generacion)
         {
             List<clsPokemon> listadoPokemonPartida;
-
+            // TODO: Try
             if (await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(int.Parse(generacion)) != null) // Para evitar NullArgumentException
             {
                 listadoPokemonPartida = await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(int.Parse(generacion));

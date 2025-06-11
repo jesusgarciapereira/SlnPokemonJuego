@@ -1,4 +1,5 @@
 ﻿using DTO;
+using MAUI.VM;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +19,9 @@ namespace MAUI.Models
         private bool esCorrecto;
         private int tiempo;
         private int cantOpciones;
-        private IDispatcherTimer temporizador;
+        
+
+        private clsPartidaVM partida;
         #endregion
 
         #region Propiedades
@@ -35,14 +38,12 @@ namespace MAUI.Models
             get { return pokemonSeleccionado; }
             set
             {
+                // this.partida = (clsPartidaVM)App.Current.MainPage.BindingContext;
                 pokemonSeleccionado = value;
                 NotifyPropertyChanged(nameof(PokemonSeleccionado));
                // NotifyPropertyChanged(nameof(EsCorrecto));
 
-                if (pokemonSeleccionado != null)
-                {
-                    temporizador.Stop();
-                }
+                
             }
         }
         public bool EsCorrecto
@@ -64,7 +65,11 @@ namespace MAUI.Models
         public int Tiempo
         {
             get { return tiempo; }
-            // set { tiempo = value; }
+            set 
+            { 
+                tiempo = value;
+                NotifyPropertyChanged(nameof(Tiempo));
+            }
         }
 
         public int CantOpciones
@@ -84,14 +89,13 @@ namespace MAUI.Models
 
         public clsPregunta(clsPokemon pokemonPreguntado, List<clsPokemon> opciones) : this()
         {
+
+            
+
             this.pokemonPreguntado = pokemonPreguntado;
             this.opciones = opciones;
 
-            this.temporizador = Application.Current.Dispatcher.CreateTimer();
-            temporizador.Interval = TimeSpan.FromSeconds(1); // Intervalo de segundos
-            temporizador.Tick += RestarContador; // Lo que hacemos en cada segundo, evento RestarContador
-
-            temporizador.Start();
+            
 
         }
         #endregion
@@ -107,24 +111,7 @@ namespace MAUI.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void RestarContador(object sender, EventArgs e)
-        {
-            if (tiempo > 0)
-            {
-                tiempo--;
-                NotifyPropertyChanged(nameof(Tiempo));
-            }
-            else
-            {
-                temporizador.Stop();
-
-                // Esto creo que no hace falta
-                //tiempo = 5;
-                //NotifyPropertyChanged(nameof(Tiempo));
-
-                //temporizador.Start();
-            }
-        }
+        
         #endregion
 
     }

@@ -42,7 +42,7 @@ namespace MAUI.VM.Utils.Converters
 
             //return color;
 
-            Color color = Colors.Transparent;
+            Color color = Colors.White;
             clsPregunta pregunta = (clsPregunta)value;
 
             if (pregunta.PokemonSeleccionado != null)

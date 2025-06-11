@@ -19,13 +19,16 @@ namespace MAUI.VM
     public class clsPartidaVM : INotifyPropertyChanged
     {
         #region Atributos
-        // private List<clsPokemon> listaPokemonGeneracion; // Creo que no se Bindea
+        private List<clsPokemon> listaPokemonGeneracion; // Creo que no se Bindea
         // private List<clsPokemon> listaOpcionesTotales; // Creo que no se Bindea
         private List<clsPregunta> listaPreguntas;
         private clsPregunta preguntaActual;
+        // private clsPokemon pokemonSeleccionado; // Evitable
         private int numRonda;
         private int puntosTotales;
         private int cantPreguntas;
+
+        private int contadorPreguntas;
         // private clsJugador jugador;
         private string nickJugador;
         private bool partidaVisible;
@@ -33,10 +36,11 @@ namespace MAUI.VM
 
         private DelegateCommand botonGuardar;
 
+        private IDispatcherTimer temporizador;
 
         #endregion
 
-        
+
 
 
         #region Propiedades
@@ -61,6 +65,28 @@ namespace MAUI.VM
             get { return preguntaActual; }
         }
 
+        public clsPokemon PokemonSeleccionado
+
+        {
+            get { return preguntaActual.PokemonSeleccionado; }
+            set
+            {
+                preguntaActual.PokemonSeleccionado = value;
+                ComprobarRespuesta();
+
+                // Esto debería ir dentro de la función ComprobarRespuesta()
+                //if (preguntaActual.PokemonSeleccionado != null)
+                //{
+                //    temporizador.Stop();
+                //}
+            }
+        }
+
+        public int Tiempo
+        {
+            get { return preguntaActual.Tiempo; }
+        }
+
         public int NumRonda
         {
             get { return numRonda; }
@@ -79,8 +105,8 @@ namespace MAUI.VM
         public string NickJugador
         {
             get { return nickJugador; }
-            set 
-            { 
+            set
+            {
                 nickJugador = value;
                 botonGuardar.RaiseCanExecuteChanged();
             }
@@ -118,17 +144,22 @@ namespace MAUI.VM
 
         public clsPartidaVM(List<clsPokemon> listaPokemonPartida)
         {
+            this.contadorPreguntas = 0;
             this.botonGuardar = new DelegateCommand(guardarJugadorPartidaExecute, habilitarGuardar);
 
-            // this.listaPokemonGeneracion = listaPokemonGeneracion;
+            this.temporizador = Application.Current.Dispatcher.CreateTimer();
+            temporizador.Interval = TimeSpan.FromSeconds(1); // Intervalo de segundos
+            temporizador.Tick += RestarContador; // Lo que hacemos en cada segundo, evento RestarContador
+
+            temporizador.Start();
+
             this.preguntaActual = new clsPregunta();
-
+            this.listaPokemonGeneracion = listaPokemonPartida;
             this.cantPreguntas = 20;
-            this.listaPreguntas = CreaPreguntas(listaPokemonPartida, cantPreguntas, preguntaActual.CantOpciones);
 
-            EjecutarPartida();
+            IniciarPartida();
 
-            
+
         }
         #endregion
 
@@ -209,9 +240,9 @@ namespace MAUI.VM
         /// Una lista de objetos clsPregunta, cada uno con un Pokémon preguntado y su lista de opciones.
         /// Las opciones no se repiten entre preguntas.
         /// </returns>
-        private List<clsPregunta> CreaPreguntas(List<clsPokemon> listaPokemonPartida, int cantPreguntas, int cantOpciones)
+        private List<clsPregunta> CreaPreguntas(int cantPreguntas, int cantOpciones)
         {
-            List<clsPokemon> listaOpcionesTotales = ObtenerPokemonAleatorios(listaPokemonPartida, cantPreguntas * preguntaActual.CantOpciones);
+            List<clsPokemon> listaOpcionesTotales = ObtenerPokemonAleatorios(this.listaPokemonGeneracion, cantPreguntas * preguntaActual.CantOpciones);
 
             List<clsPregunta> preguntas = new List<clsPregunta>();
             List<clsPokemon> opcionesPregunta;
@@ -247,37 +278,94 @@ namespace MAUI.VM
         /// Post: Se muestra una pregunta a la vez, actualizando la propiedad 'PreguntaActual' cada intervalo de tiempo.
         /// <param name="segundos">Cantidad de segundos que se muestra cada pregunta antes de pasar a la siguiente.</param>
         /// <returns>Una tarea asincrónica que gestiona la temporización entre preguntas.</returns>
-        private async Task EjecutarPartida()
+        private void IniciarPartida()
         {
+            this.listaPreguntas = CreaPreguntas(cantPreguntas, preguntaActual.CantOpciones);
+
             partidaVisible = true;
 
-            for (int i = 0; i < listaPreguntas.Count; i++)
-            {
-                this.preguntaActual = new clsPregunta(listaPreguntas[i].PokemonPreguntado, listaPreguntas[i].Opciones);
+            this.preguntaActual = new clsPregunta(listaPreguntas[contadorPreguntas].PokemonPreguntado, listaPreguntas[contadorPreguntas].Opciones);
 
-                NotifyPropertyChanged(nameof(PreguntaActual));
+            NotifyPropertyChanged(nameof(PreguntaActual));
 
-                this.numRonda = i + 1;
+            this.numRonda = contadorPreguntas + 1;
 
-                NotifyPropertyChanged(nameof(NumRonda));
+            //while (preguntaActual.PokemonSeleccionado == null && preguntaActual.Tiempo > 0)
+            //{
+            //    await Task.Delay(100); // Espera 100ms antes de volver a comprobar
+            //}
 
-                while (preguntaActual.PokemonSeleccionado == null && preguntaActual.Tiempo > 0)
-                {
-                    await Task.Delay(100); // Espera 100ms antes de volver a comprobar
-                }
+            // AsignaPuntos();
 
-                AsignaPuntos();
 
-            }
+            //partidaVisible = false;
+            //NotifyPropertyChanged(nameof(PartidaVisible));
 
-            partidaVisible = false;
-            NotifyPropertyChanged(nameof(PartidaVisible));
+            //formularioVisible = true;
+            //NotifyPropertyChanged(nameof(FormularioVisible));
 
-            formularioVisible = true;
-            NotifyPropertyChanged(nameof(FormularioVisible));
-
+            // this.contadorPreguntas++;
             // GuardarJugadorPartida();
             // navegar(new MenuPage());
+        }
+        private void RestarContador(object sender, EventArgs e)
+        {
+            if (this.preguntaActual.Tiempo > 0 && this.preguntaActual.PokemonSeleccionado == null)
+            {
+                this.preguntaActual.Tiempo--;
+
+            }
+            else
+            {
+                // temporizador.Stop();
+
+                ComprobarRespuesta();
+                // Pasar a la siguiente pregunta
+
+
+                // Esto creo que no hace falta
+                //tiempo = 5;
+                //NotifyPropertyChanged(nameof(Tiempo));
+
+                //temporizador.Start();
+            }
+        }
+
+        /// <summary>
+        /// Comprueba que pokemonSeleccionado y pokemonCorrecto son iguales, para el temporizador, asigna los puntos y pasa a la siguiente pregunta
+        /// </summary>
+        private void ComprobarRespuesta()
+        {
+            AsignaPuntos();
+
+            
+
+            SiguientePregunta();
+        }
+
+        private void SiguientePregunta()
+        {
+            this.contadorPreguntas++;
+
+            this.numRonda = contadorPreguntas + 1;
+
+            NotifyPropertyChanged(nameof(NumRonda));
+
+            if (this.contadorPreguntas < this.cantPreguntas)
+            {
+                this.preguntaActual = this.listaPreguntas[contadorPreguntas];
+                NotifyPropertyChanged(nameof(PreguntaActual));
+            }
+            else
+            {
+                temporizador.Stop();
+
+                partidaVisible = false;
+                NotifyPropertyChanged(nameof(PartidaVisible));
+
+                formularioVisible = true;
+                NotifyPropertyChanged(nameof(FormularioVisible));
+            }
         }
 
         /// <summary>
@@ -287,7 +375,7 @@ namespace MAUI.VM
         {
             if (preguntaActual.PokemonSeleccionado != null)
             {
-                if (preguntaActual.EsCorrecto)
+                if ((bool)preguntaActual.EsCorrecto)
                 {
                     this.puntosTotales += preguntaActual.Tiempo;
                 }
@@ -298,6 +386,8 @@ namespace MAUI.VM
 
                 NotifyPropertyChanged(nameof(PuntosTotales));
             }
+
+
         }
 
         /// <summary>
@@ -342,6 +432,15 @@ namespace MAUI.VM
 
         //}
 
+        private async Task GuardarVolviendo() 
+        {
+            // Porque no quiero que la ventana se vea antes de navegar
+
+
+            await GuardarJugadorPartida();
+
+            navegar(new MenuPage());
+        }
         #endregion
 
         #region Comandos
@@ -349,9 +448,7 @@ namespace MAUI.VM
 
         private void guardarJugadorPartidaExecute()
         {
-            GuardarJugadorPartida();
-
-            navegar(new MenuPage());
+            GuardarVolviendo();
         }
 
         private bool habilitarGuardar()
