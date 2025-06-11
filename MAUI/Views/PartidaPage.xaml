@@ -13,23 +13,19 @@
     <VerticalStackLayout Padding="20" BackgroundColor="#F5F5DC">
 
         <Grid Margin="0,20,0,10"
-              RowDefinitions="Auto,Auto,*"
-              ColumnDefinitions="*,*,*"
-              VerticalOptions="Center"
+              RowDefinitions="Auto,Auto,Auto,*"
+              ColumnDefinitions="*,*"  VerticalOptions="Center"
               HorizontalOptions="FillAndExpand"
               IsVisible="{Binding PartidaVisible}">
 
-            <!-- Label Ronda -->
-            <Label Grid.Row="0" Grid.ColumnSpan="3"
-                   Text="{Binding NumRonda, StringFormat='Ronda {0}'}"
+            <Label Grid.Row="0" Grid.ColumnSpan="2"  Text="{Binding NumRonda, StringFormat='Ronda {0}'}"
                    FontSize="48"
                    FontFamily="PokemonFuente"
                    HorizontalOptions="Center"
                    TextColor="#FF6F00" />
 
-            <!-- Tiempo (Izquierda) -->
             <VerticalStackLayout Grid.Row="1" Grid.Column="0"
-                                 HorizontalOptions="Center"
+                                 HorizontalOptions="FillAndExpand"
                                  VerticalOptions="Center"
                                  Spacing="2">
                 <Label Text="Tiempo"
@@ -44,17 +40,7 @@
                        HorizontalOptions="Center" />
             </VerticalStackLayout>
 
-            <!-- Imagen (Centro) -->
-            <Image Grid.Row="1" Grid.Column="1"
-                   Source="{Binding PreguntaActual.PokemonPreguntado.Imagen}"
-                   HeightRequest="300"
-                   WidthRequest="300"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"/>
-
-            <!-- Puntos Totales (Derecha) -->
-            <VerticalStackLayout Grid.Row="1" Grid.Column="2"
-                                 HorizontalOptions="Center"
+            <VerticalStackLayout Grid.Row="1" Grid.Column="1"  HorizontalOptions="FillAndExpand"
                                  VerticalOptions="Center"
                                  Spacing="2">
                 <Label Text="Puntos"
@@ -69,9 +55,13 @@
                        HorizontalOptions="Center" />
             </VerticalStackLayout>
 
-            <!-- Opciones (Fila 2, columnas 0 a 2) -->
-            <CollectionView Grid.Row="2" Grid.ColumnSpan="3"
-                            ItemsSource="{Binding PreguntaActual.Opciones}" 
+            <Image Grid.Row="2" Grid.ColumnSpan="2"  Source="{Binding PreguntaActual.PokemonPreguntado.Imagen}"
+                   HeightRequest="300"
+                   WidthRequest="300"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"/>
+
+            <CollectionView Grid.Row="3" Grid.ColumnSpan="2"  ItemsSource="{Binding PreguntaActual.Opciones}"
                             SelectionMode="Single"
                             SelectedItem="{Binding PokemonSeleccionado, Mode=TwoWay}">
                 <CollectionView.ItemsLayout>
@@ -85,13 +75,13 @@
                     <DataTemplate>
                         <Frame CornerRadius="12"
                                Padding="10"
-                               Margin="5"               
-                               BackgroundColor="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, 
-                         Path=BindingContext.PreguntaActual.PokemonSeleccionado, 
-                         Converter={StaticResource colorBackgroundRespuesta}}"
+                               Margin="5"
+                               BackgroundColor="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}},
+                                                         Path=BindingContext.PreguntaActual,
+                                                         Converter={StaticResource colorBackgroundRespuesta}}"
                                BorderColor="#FBC02D">
                             <Label Text="{Binding Nombre}"
-                                   FontSize="24"
+                                   FontSize="14"
                                    FontFamily="GameBoyFuente"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"
@@ -100,40 +90,34 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
         </Grid>
 
         <Grid Margin="0,20,0,10"
-      RowDefinitions="*,*,*,*" 
-            ColumnDefinitions="*"
+      RowDefinitions="Auto,Auto,Auto,Auto"  ColumnDefinitions="*"
       VerticalOptions="Center"
       HorizontalOptions="FillAndExpand"
       IsVisible="{Binding FormularioVisible}"
       RowSpacing="15">
-            <!-- Reducido el espaciado para mejor proporción -->
 
-            <!-- Título principal -->
-            <Label Grid.Row="0"
+    <Label Grid.Row="0"
            Text="Fin de la partida"
            FontSize="36"
            FontFamily="PokemonFuente"
            TextColor="#FF6F00"
            HorizontalOptions="Center"
            VerticalOptions="End"/>
-            <!-- Alineado abajo en su celda -->
 
-            <!-- Puntos - ahora en Grid.Row="1" -->
-            <Label Grid.Row="1"
-           Text="{Binding PuntosTotales, StringFormat='Has conseguido {0} Punto(s)'}"
-           FontSize="24"
-           FontFamily="GameBoyFuente"
-           TextColor="#388E3C"
-           HorizontalOptions="Center"
-           VerticalOptions="Start"/>
-            <!-- Alineado arriba en su celda -->
+    <Grid Grid.Row="1">
+        <Label Text="{Binding PuntosTotales, StringFormat='Has conseguido: {0} Punto(s)'}"
+               FontSize="22"
+               FontFamily="GameBoyFuente"
+               TextColor="#388E3C"
+               HorizontalOptions="Center"
+               VerticalOptions="Start"
+               HorizontalTextAlignment="Center"/>
+    </Grid>
 
-            <!-- Entry para el nick -->
-            <Entry Grid.Row="2"
+    <Entry Grid.Row="2"
            Placeholder="Escribe tu Nick"
            Text="{Binding NickJugador}"
            FontSize="20"
@@ -141,11 +125,10 @@
            TextColor="#5D4037"
            HorizontalOptions="Fill"
            VerticalOptions="Center"
-           Margin="40,0"
-           HeightRequest="40"/>
+           Margin="0"
+           HeightRequest="50"/>
 
-            <!-- Botón de guardar -->
-            <Button Grid.Row="3"
+    <Button Grid.Row="3"
             Text="Guardar"
             Command="{Binding BotonGuardar}"
             FontSize="20"
@@ -153,10 +136,10 @@
             BackgroundColor="#388E3C"
             TextColor="White"
             HorizontalOptions="Center"
-            VerticalOptions="Start" 
-                WidthRequest="200"
+            VerticalOptions="Start"
+            WidthRequest="200"
             HeightRequest="50"
             CornerRadius="10"/>
-        </Grid>
+</Grid>
     </VerticalStackLayout>
 </ContentPage>

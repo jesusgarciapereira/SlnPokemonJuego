@@ -11,7 +11,7 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <VerticalStackLayout Padding="30" Spacing="25" BackgroundColor="#F5F5DC">
+        <VerticalStackLayout Padding="30" Spacing="40" BackgroundColor="#F5F5DC">
 
             <!--
             <Label Text="Pokémon Advanced"
@@ -21,8 +21,8 @@
                    HorizontalOptions="Center" />
 -->
             <Image Source="pokemon_advanced_title.png"
-                   WidthRequest="300"
-                   HeightRequest="200"
+                   WidthRequest="400"
+                   HeightRequest="300"
                    HorizontalOptions="Center"/>
 
             <Button Text="Seleccionar Partida"
@@ -31,7 +31,8 @@
                     BackgroundColor="#FFEB3B"
                     TextColor="Black"
                     CornerRadius="12"
-                    Padding="12"/>
+                    Padding="20"
+                    FontSize="15"/>
 
             <Button Text="Ranking"
                     Command="{Binding BotonRanking}"
@@ -39,7 +40,8 @@
                     BackgroundColor="#81D4FA"
                     TextColor="Black"
                     CornerRadius="12"
-                    Padding="12"/>
+                    Padding="20"
+                    FontSize="15"/>
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

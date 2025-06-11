@@ -10,13 +10,16 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <VerticalStackLayout Padding="30" Spacing="20" BackgroundColor="#F5F5DC">
+        <VerticalStackLayout Padding="30" Spacing="50" BackgroundColor="#F5F5DC">
 
-            <Label Text="Selecciona una Generación"
-                   FontSize="48"
-                   FontFamily="PokemonFuente"
-                   HorizontalOptions="Center"
-                   TextColor="#FF6F00"/>
+            <Grid>
+                <Label Text="Selecciona Generación"
+           FontSize="48"
+           FontFamily="PokemonFuente"
+           HorizontalOptions="Center"
+           HorizontalTextAlignment="Center"
+           TextColor="#FF6F00"/>
+            </Grid>
 
             <Button Text="1º Kanto"
                     Command="{Binding BotonGeneracion}"
@@ -24,7 +27,9 @@
                     FontFamily="GameBoyFuente"
                     BackgroundColor="#FFCDD2"
                     TextColor="#B71C1C"
-                    CornerRadius="12"/>
+                    CornerRadius="12"
+                    Padding="20"
+                    FontSize="24"/>
 
             <Button Text="2º Johto"
                     Command="{Binding BotonGeneracion}"
@@ -32,7 +37,9 @@
                     FontFamily="GameBoyFuente"
                     BackgroundColor="#C5CAE9"
                     TextColor="#1A237E"
-                    CornerRadius="12"/>
+                    CornerRadius="12"
+                    Padding="20"
+                    FontSize="24"/>
 
             <Button Text="3º Hoenn"
                     Command="{Binding BotonGeneracion}"
@@ -40,7 +47,9 @@
                     FontFamily="GameBoyFuente"
                     BackgroundColor="#B2EBF2"
                     TextColor="#006064"
-                    CornerRadius="12"/>
+                    CornerRadius="12"
+                    Padding="20"
+                    FontSize="24"/>
 
             <Button Text="TODAS"
                     Command="{Binding BotonGeneracion}"
@@ -48,7 +57,9 @@
                     FontFamily="GameBoyFuente"
                     BackgroundColor="#FFF176"
                     TextColor="#F57F17"
-                    CornerRadius="12"/>
+                    CornerRadius="12"
+                    Padding="20"
+                    FontSize="24"/>
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>
