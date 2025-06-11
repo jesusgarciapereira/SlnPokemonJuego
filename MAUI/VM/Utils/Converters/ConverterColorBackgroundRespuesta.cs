@@ -1,4 +1,5 @@
-﻿using MAUI.Models;
+﻿using DTO;
+using MAUI.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,25 +22,65 @@ namespace MAUI.VM.Utils.Converters
         /// <returns>Un color: verde (≤33%), amarillo (34–66%), o rojo (>66%).</returns>
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
+            //Color color = Colors.Transparent;
+            //clsPregunta pregunta;
+
+            //if (value != null)
+            //{
+            //    pregunta = (clsPregunta)value;
+
+            //    if (pregunta.EsCorrecto)
+            //    {
+
+            //        color = Colors.LightGreen;
+            //    }
+            //    else
+            //    {
+            //        color = Colors.IndianRed;
+            //    }
+            //}
+
+            //return color;
+
             Color color = Colors.Transparent;
-            clsPregunta pregunta;
+            clsPregunta pregunta = (clsPregunta)value;
 
-            if (value != null)
+            if (pregunta.PokemonSeleccionado != null)
             {
-                pregunta = (clsPregunta)value;
-
                 if (pregunta.EsCorrecto)
                 {
 
                     color = Colors.LightGreen;
                 }
+
                 else
                 {
                     color = Colors.IndianRed;
                 }
+                
             }
-
             return color;
+
+            //var pokemonActual = value as clsPokemon;  // El Pokémon actual en la lista de opciones
+            //var pregunta = parameter as clsPregunta;  // La pregunta actual
+
+            //if (pokemonActual == null || pregunta == null)
+            //    return Colors.Transparent;
+
+            //// Si no se ha seleccionado nada, transparente
+            //if (pregunta.PokemonSeleccionado == null)
+            //    return Colors.Transparent;
+
+            //// Verde si es la respuesta correcta
+            //if (pokemonActual.Equals(pregunta.PokemonPreguntado))
+            //    return Colors.LightGreen;
+
+            //// Rojo si es la opción seleccionada pero incorrecta
+            //if (pokemonActual.Equals(pregunta.PokemonSeleccionado))
+            //    return Colors.IndianRed;
+
+            //// Transparente para otras opciones no seleccionadas
+            //return Colors.Transparent;
         }
 
         /// <summary>

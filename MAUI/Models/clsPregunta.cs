@@ -37,6 +37,7 @@ namespace MAUI.Models
             {
                 pokemonSeleccionado = value;
                 NotifyPropertyChanged(nameof(PokemonSeleccionado));
+               // NotifyPropertyChanged(nameof(EsCorrecto));
 
                 if (pokemonSeleccionado != null)
                 {
