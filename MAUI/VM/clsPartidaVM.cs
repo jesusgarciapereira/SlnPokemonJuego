@@ -138,12 +138,11 @@ namespace MAUI.VM
         /// </summary>
         private void IniciarPartida()
         {
-            this.listaPreguntas = CreaPreguntas(cantPreguntas, preguntaActual.CantOpciones);
+            this.listaPreguntas = CreaPreguntas();
 
             this.partidaVisible = true;
 
             this.preguntaActual = new clsPregunta(listaPreguntas[contadorPreguntas].PokemonPreguntado, listaPreguntas[contadorPreguntas].Opciones);
-
             NotifyPropertyChanged(nameof(PreguntaActual));
 
             this.numRonda = contadorPreguntas + 1;
@@ -157,9 +156,9 @@ namespace MAUI.VM
         /// <param name="cantPreguntas">Cantidad total de preguntas a generar.</param>
         /// <param name="cantOpciones">Cantidad de opciones disponibles por cada pregunta.</param>
         /// <returns>Una lista de objetos <see cref="clsPregunta"/>, cada uno con un Pokémon preguntado y una lista de opciones.</returns>
-        private List<clsPregunta> CreaPreguntas(int cantPreguntas, int cantOpciones)
+        private List<clsPregunta> CreaPreguntas()
         {
-            List<clsPokemon> listaOpcionesTotales = ObtenerPokemonAleatorios(this.listaPokemonGeneracion, cantPreguntas * preguntaActual.CantOpciones);
+            List<clsPokemon> listaOpcionesTotales = ObtenerPokemonAleatorios(this.listaPokemonGeneracion, this.cantPreguntas * preguntaActual.CantOpciones);
 
             List<clsPregunta> preguntas = new List<clsPregunta>();
             List<clsPokemon> opcionesPregunta;
@@ -170,12 +169,12 @@ namespace MAUI.VM
             {
                 opcionesPregunta = new List<clsPokemon>();
 
-                for (int j = 0; j < cantOpciones; j++)
+                for (int j = 0; j < this.preguntaActual.CantOpciones; j++)
                 {
                     opcionesPregunta.Add(listaOpcionesTotales[j]);
                 }
 
-                listaOpcionesTotales.RemoveRange(0, cantOpciones);
+                listaOpcionesTotales.RemoveRange(0, this.preguntaActual.CantOpciones);
 
                 pokemonPreguntado = ObtenerPokemonAleatorios(opcionesPregunta, 1)[0];
 
