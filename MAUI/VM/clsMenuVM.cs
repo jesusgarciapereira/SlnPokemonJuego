@@ -1,10 +1,5 @@
 ﻿using MAUI.Views;
 using MAUI.VM.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MAUI.VM
 {
@@ -36,19 +31,6 @@ namespace MAUI.VM
         #endregion
 
         #region Métodos
-        // Creo que este primer Método no hará falta aquí 
-
-        /// <summary>
-        /// Muestra un mensaje emergente.
-        /// </summary>
-        /// <param name="titulo">Título del mensaje.</param>
-        /// <param name="cuerpo">Cuerpo del mensaje.</param>
-        /// <param name="boton">Texto del botón de cierre.</param>
-        private async void muestraMensaje(string titulo, string cuerpo, string boton)
-        {
-            await Application.Current.MainPage.DisplayAlert(titulo, cuerpo, boton);
-        }
-
         /// <summary>
         /// Navega hacia la página indicada en el parámetro.
         /// </summary>
@@ -56,11 +38,9 @@ namespace MAUI.VM
         {
             await Application.Current.MainPage.Navigation.PushAsync(pagina);
         }
-
         #endregion
 
         #region Comandos
-
         /// <summary>
         /// Método asociado al execute del comando botonRanking que navega a RankingPage
         /// </summary>

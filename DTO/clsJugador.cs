@@ -24,15 +24,15 @@ namespace DTO
         public string Nick
         {
             get { return nick; }
-            set { nick = value; } // ?
+            set { nick = value; } // Es necesario
         }
 
         public int Puntuacion
         {
             get { return puntuacion; }
-            set { puntuacion = value; } // ¿Es un campo calculado, no debería tener set. Pero debo ponérselo para hacer los Post?
+            set { puntuacion = value; } // Es necesario
         }
-        // ¿Ninguno tiene set porque todo está cogido de una API?
+        
         #endregion
 
         #region Constructores
@@ -40,19 +40,8 @@ namespace DTO
         { 
         }
 
-        public clsJugador(int id) // Seguramente este Constructor es innecesario aquí
-        {
-            this.id = id;
-        }
         public clsJugador(string nick, int puntuacion)
         {
-            this.nick = nick;
-            this.puntuacion = puntuacion;
-        }
-
-        public clsJugador(int id, string nick, int puntuacion)
-        {
-            this.id = id;
             this.nick = nick;
             this.puntuacion = puntuacion;
         }

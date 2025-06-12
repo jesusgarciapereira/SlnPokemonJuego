@@ -19,9 +19,6 @@ namespace MAUI.Models
         private bool esCorrecto;
         private int tiempo;
         private int cantOpciones;
-        
-
-        private clsPartidaVM partida;
         #endregion
 
         #region Propiedades
@@ -38,45 +35,30 @@ namespace MAUI.Models
             get { return pokemonSeleccionado; }
             set
             {
-                // this.partida = (clsPartidaVM)App.Current.MainPage.BindingContext;
                 pokemonSeleccionado = value;
                 NotifyPropertyChanged(nameof(PokemonSeleccionado));
-               // NotifyPropertyChanged(nameof(EsCorrecto));
-
-                
             }
         }
         public bool EsCorrecto
         {
             get
             {
-                //this.esCorrecto = false;
-
-                //if (pokemonPreguntado.Equals(pokemonSeleccionado))
-                //{
-                //    this.esCorrecto = true;
-                //}
-
-                //return esCorrecto;
-
                 return pokemonPreguntado.Equals(pokemonSeleccionado);
             }
         }
         public int Tiempo
         {
             get { return tiempo; }
-            set 
-            { 
+            set
+            {
                 tiempo = value;
                 NotifyPropertyChanged(nameof(Tiempo));
             }
         }
-
         public int CantOpciones
         {
             get { return cantOpciones; }
         }
-
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
@@ -86,22 +68,14 @@ namespace MAUI.Models
             this.cantOpciones = 4;
             this.tiempo = 5;
         }
-
         public clsPregunta(clsPokemon pokemonPreguntado, List<clsPokemon> opciones) : this()
         {
-
-            
-
             this.pokemonPreguntado = pokemonPreguntado;
             this.opciones = opciones;
-
-            
-
         }
         #endregion
 
         #region Métodos
-
         /// <summary>
         /// Lanza el evento PropertyChanged para notificar a la vista que una propiedad ha cambiado.
         /// </summary>
@@ -110,13 +84,7 @@ namespace MAUI.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        
         #endregion
-
     }
-
-
-
 }
 

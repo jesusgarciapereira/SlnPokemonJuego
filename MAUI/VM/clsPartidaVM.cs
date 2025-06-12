@@ -1,107 +1,59 @@
 ﻿using DTO;
 using MAUI.Models;
-using SERVICE;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using System.Net;
 using MAUI.Views;
 using MAUI.VM.Utils;
+using BLMAUI;
 
 namespace MAUI.VM
 {
     public class clsPartidaVM : INotifyPropertyChanged
     {
         #region Atributos
-        private List<clsPokemon> listaPokemonGeneracion; // Creo que no se Bindea
-        // private List<clsPokemon> listaOpcionesTotales; // Creo que no se Bindea
+        private List<clsPokemon> listaPokemonGeneracion;
         private List<clsPregunta> listaPreguntas;
+
         private clsPregunta preguntaActual;
-        // private clsPokemon pokemonSeleccionado; // Evitable
+
         private int numRonda;
         private int puntosTotales;
         private int cantPreguntas;
-
         private int contadorPreguntas;
-        // private clsJugador jugador;
+
         private string nickJugador;
+
         private bool partidaVisible;
         private bool formularioVisible;
 
         private DelegateCommand botonGuardar;
 
         private IDispatcherTimer temporizador;
-
         #endregion
 
-
-
-
         #region Propiedades
-        //public List<clsPokemon> ListaPokemonGeneracion
-        //{
-        //    get { return listaPokemonGeneracion; }
-        //}
-
-        //public List<clsPokemon> ListaOpcionesTotales
-        //{
-        //    get { return listaOpcionesTotales; }
-        //}
-
-        // Esto no se bindea con nada
-        //public List<clsPregunta> ListaPreguntas
-        //{
-        //    get { return listaPreguntas; }
-        //}
-
         public clsPregunta PreguntaActual
         {
             get { return preguntaActual; }
         }
-
-        public clsPokemon PokemonSeleccionado
-
+        public clsPokemon PokemonSeleccionado // Intermediario
         {
             get { return preguntaActual.PokemonSeleccionado; }
             set
             {
                 preguntaActual.PokemonSeleccionado = value;
                 ComprobarRespuesta();
-
-                // Esto debería ir dentro de la función ComprobarRespuesta()
-                //if (preguntaActual.PokemonSeleccionado != null)
-                //{
-                //    temporizador.Stop();
-                //}
             }
         }
-
-        public int Tiempo
-        {
-            get { return preguntaActual.Tiempo; }
-        }
-
         public int NumRonda
         {
             get { return numRonda; }
         }
-
         public int PuntosTotales
         {
             get { return puntosTotales; }
         }
-
-        public int CantPreguntas
-        {
-            get { return cantPreguntas; }
-        }
-
         public string NickJugador
         {
             get { return nickJugador; }
@@ -111,40 +63,34 @@ namespace MAUI.VM
                 botonGuardar.RaiseCanExecuteChanged();
             }
         }
-        //public clsJugador Jugador
-        //{
-        //    get { return jugador; }
-        //}
-
         public bool PartidaVisible
         {
             get { return partidaVisible; }
         }
-
         public bool FormularioVisible
         {
             get { return formularioVisible; }
         }
-
         public DelegateCommand BotonGuardar
         {
             get { return botonGuardar; }
         }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-        // NotifyPropertyChanged(nameof(ListaLuchadoresConPuntuacionTotal));
         #endregion
 
         #region Constructores
         public clsPartidaVM()
         {
         }
-
         public clsPartidaVM(List<clsPokemon> listaPokemonPartida)
         {
+            this.listaPokemonGeneracion = listaPokemonPartida;
+            this.preguntaActual = new clsPregunta();
+            
+            this.cantPreguntas = 20;
             this.contadorPreguntas = 0;
+
             this.botonGuardar = new DelegateCommand(guardarJugadorPartidaExecute, habilitarGuardar);
 
             this.temporizador = Application.Current.Dispatcher.CreateTimer();
@@ -153,13 +99,7 @@ namespace MAUI.VM
 
             temporizador.Start();
 
-            this.preguntaActual = new clsPregunta();
-            this.listaPokemonGeneracion = listaPokemonPartida;
-            this.cantPreguntas = 20;
-
             IniciarPartida();
-
-
         }
         #endregion
 
@@ -174,14 +114,6 @@ namespace MAUI.VM
         }
 
         /// <summary>
-        /// Navega hacia la página indicada en el parámetro.
-        /// </summary>
-        private async void navegar(Page pagina)
-        {
-            await Application.Current.MainPage.Navigation.PushAsync(pagina);
-        }
-
-        /// <summary>
         /// Muestra un mensaje emergente.
         /// </summary>
         /// <param name="titulo">Título del mensaje.</param>
@@ -192,6 +124,13 @@ namespace MAUI.VM
             await Application.Current.MainPage.DisplayAlert(titulo, cuerpo, boton);
         }
 
+        /// <summary>
+        /// Navega hacia la página indicada en el parámetro.
+        /// </summary>
+        private async void navegar(Page pagina)
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(pagina);
+        }
         /// <summary>
         /// Devuelve una selección aleatoria de Pokémon sin repetir.
         /// </summary>
@@ -397,20 +336,26 @@ namespace MAUI.VM
         private async Task GuardarJugadorPartida()
         {
             clsJugador jugador = new clsJugador(this.nickJugador, this.puntosTotales);
+            try
+            {
+                HttpStatusCode estado = await clsJugadorServiceBL.GuardarJugadorServiceBL(jugador);
 
-            HttpStatusCode estado = await clsJugadorService.GuardarJugadorService(jugador);
-
-            if ((int)estado == 200)
-            {
-                muestraMensaje("Éxito", $"Puntuacion de \"{this.nickJugador}\" = {this.puntosTotales} guardada correctamente", "Aceptar");
+                if ((int)estado == 200)
+                {
+                    muestraMensaje("Éxito", $"Puntuacion de \"{this.nickJugador}\" = {this.puntosTotales} guardada correctamente", "Aceptar");
+                }
+                else if ((int)estado == 400)
+                {
+                    muestraMensaje("Error de envío", "La información enviada no es válida. Por favor, revisa los campos e inténtalo de nuevo.", "Aceptar");
+                }
+                else if ((int)estado == 404)
+                {
+                    muestraMensaje("No encontrado", "No se ha encontrado el recurso solicitado. Es posible que ya no exista o que haya un error en la dirección.", "Aceptar");
+                }
             }
-            else if ((int)estado == 400)
+            catch (Exception e)
             {
-                muestraMensaje("Error de envío", "La información enviada no es válida. Por favor, revisa los campos e inténtalo de nuevo.", "Aceptar");
-            }
-            else if ((int)estado == 404)
-            {
-                muestraMensaje("No encontrado", "No se ha encontrado el recurso solicitado. Es posible que ya no exista o que haya un error en la dirección.", "Aceptar");
+                muestraMensaje("Error", "Ha habido un problema, vuelva a intentarlo más tarde", "OK");
             }
         }
 

@@ -1,19 +1,13 @@
 ﻿using BLMAUI;
 using DTO;
 using MAUI.VM.Utils;
-using SERVICE;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MAUI.VM
 {
-    public class clsRankingVM :INotifyPropertyChanged
+    public class clsRankingVM : INotifyPropertyChanged
     {
         #region Atributos
         private ObservableCollection<clsJugador> listaJugadoresVisible;
@@ -27,22 +21,18 @@ namespace MAUI.VM
         {
             get { return listaJugadoresVisible; }
         }
-
         public DelegateCommand BotonActualizar
         {
             get { return botonActualizar; }
         }
-
         public bool Cargando
         {
             get { return cargando; }
         }
-
         public bool ListaVacia
         {
             get { return listaVacia; }
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
@@ -52,8 +42,7 @@ namespace MAUI.VM
         {
             // Se ejecuta también al inicio
             actualizarExecute();
-
-            botonActualizar = new DelegateCommand(actualizarExecute); // Podríamos poner un CanExecute() para que no se pulse tan consecutivamente
+            botonActualizar = new DelegateCommand(actualizarExecute);
         }
         #endregion
 
@@ -93,23 +82,26 @@ namespace MAUI.VM
             cargando = true;
             NotifyPropertyChanged(nameof(Cargando));
 
-            if (await clsJugadorServiceBL.ObtenerListadoJugadoresServiceBL() != null) // Para evitar NullArgumentException
+            try
             {
-
-                listaJugadoresVisible = new ObservableCollection<clsJugador>(await clsJugadorServiceBL.ObtenerListadoJugadoresServiceBL());
-                NotifyPropertyChanged(nameof(ListaJugadoresVisible));
-
-
-                if (listaJugadoresVisible.Count == 0)
+                if (await clsJugadorServiceBL.ObtenerListadoJugadoresServiceBL() != null) // Para evitar NullArgumentException
                 {
-                    // Cambia la visibilidad del label
-                    listaVacia = true;
-                    NotifyPropertyChanged(nameof(ListaVacia));
+
+                    listaJugadoresVisible = new ObservableCollection<clsJugador>(await clsJugadorServiceBL.ObtenerListadoJugadoresServiceBL());
+                    NotifyPropertyChanged(nameof(ListaJugadoresVisible));
+
+
+                    if (listaJugadoresVisible.Count == 0)
+                    {
+                        // Cambia la visibilidad del label
+                        listaVacia = true;
+                        NotifyPropertyChanged(nameof(ListaVacia));
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                muestraMensaje("Error", "Ha habido un problema en la Base de Datos, vuelva a intentarlo más tarde", "OK");
+                muestraMensaje("Error", "Ha habido un problema, vuelva a intentarlo más tarde", "OK");
             }
 
             // Al final siempre desactivamos el ActivityIndicator

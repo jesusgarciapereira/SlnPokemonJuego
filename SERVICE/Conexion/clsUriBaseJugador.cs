@@ -32,6 +32,10 @@ namespace SERVICE.Conexion
         #endregion
 
         #region Métodos
+        /// <summary>
+        /// Obtiene la URI base de la API de jugadores.
+        /// </summary>
+        /// <returns>Una cadena de texto que representa la URI base de la API.</returns>
         public static string getUriBase()
         {
             return "https://apijugadores.azurewebsites.net/api";

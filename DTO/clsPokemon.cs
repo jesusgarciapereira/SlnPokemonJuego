@@ -16,13 +16,11 @@ namespace DTO
         #endregion
 
         #region Propiedades
-        [JsonPropertyName("id")]
         public int IdPokemon
         {
             get { return idPokemon; }
         }
 
-        [JsonPropertyName("name")]
         public string Nombre
         {
             get { return nombre; }
@@ -32,19 +30,12 @@ namespace DTO
         {
             get { return imagen; }
         }
-        // ¿Ninguno tiene set porque todo está cogido de una API?
+        
         #endregion
 
         #region Constructores
         public clsPokemon()
         {
-        }
-
-        // Quizás lo necesite, o no
-        public clsPokemon(int idPokemon, string nombre)
-        {
-            this.idPokemon = idPokemon;
-            this.nombre = nombre;
         }
 
         public clsPokemon(int idPokemon, string nombre, string imagen)

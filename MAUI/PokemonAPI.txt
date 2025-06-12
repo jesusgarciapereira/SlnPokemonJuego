@@ -63,27 +63,21 @@ ASP
 Segunda Solución (SlnJuego)
 
 DTO
-	clsJugador // ¿Son necesarios los set?
+	clsJugador 
 		private int idJugador;
 		private string nick;
 		private int puntuacion;
 
 		public int IdJugador {get;}
-		public string Nick {get; set;}
-		public int Puntuacion {get; set;} 
+		public string Nick {get; set;} // Necesario el set
+		public int Puntuacion {get; set;} // Necesario el set
 
 		public clsJugador() 
         { 
         }
 
-        public clsJugador(int id) 
+        public clsJugador(string nick, int puntuacion)
         {
-            this.id = id;
-        }
-
-        public clsJugador(int id, string nick, int puntuacion)
-        {
-            this.id = id;
             this.nick = nick;
             this.puntuacion = puntuacion;
         }
@@ -97,7 +91,7 @@ DTO
 		public string Nombre {get;}
 		public int Imagen {get;} 
 
-        public clsPokemon()
+		public clsPokemon()
         {
         }
 
@@ -108,54 +102,311 @@ DTO
             this.imagen = imagen;
         }
 
-// Imagen sacada de aqui
-// https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png
-Hasta 386
+		// TODO: Sobreescribir el Método Equals
 
 SERVICE
 	Conexion
-		clsUriBaseJugador
-		clsUriBasePokemon
+		clsUriBaseJugador 
+			private string uriBase;
 
-	clsPokemonService
-		// Cada uno elegiremos una manera, para saber cuántos Pokemons pedir. 151, 251 ó 386
-			https://pokeapi.co/api/v2/pokemon/?offset=0&limit=151
-		public static async Task<List<clsPokemon>> ObtenerListadoPokemons
-			...
-		public static async Task<List<clsPokemon>> ObtenerListadoPokemonsPorGeneracion(int generacion)
-			...
+			public string UriBase {get;}
+
+			public clsUriBaseJugador()
+			{
+			    this.uriBase = "https://apijugadores.azurewebsites.net";
+			}
+
+			public clsUriBaseJugador(string uriBase)
+			{
+			    this.uriBase = uriBase;
+			}
+			
+			// Sólo es necesario este Método, lo demás es para tener una clase completa
+			public static string getUriBase()
+			{
+			    return "https://apijugadores.azurewebsites.net/api";
+			}
+   
+		clsUriBasePokemon
+			private string uriBase;
+
+			public string UriBase {get;}
+
+			public clsUriBasePokemon()
+			{
+			    this.uriBase = "https://pokeapi.co/api/v2/pokemon";
+			}
+
+			public clsUriBasePokemon(string uriBase)
+			{
+			    this.uriBase = uriBase;
+			}
+
+			// Sólo es necesario este Método, lo demás es para tener una clase completa
+			public static string getUriBase()
+			{
+			    return "https://pokeapi.co/api/v2/pokemon";
+			}
+
 	clsJugadorService
-		public static async Task<Int> GuardarJugadorService (clsJugador jugador)
-			return numFilasAfectadas;
-		}		
-		public static async Task<List<clsJugador>> ObtenerListadoJugadoresService{
+		public static async Task<List<clsJugador>> ObtenerListadoJugadoresService()
+		{
 			return listadoJugadores;
+		}		
+		public static async Task<HttpStatusCode> GuardarJugadorService(clsJugador jugador)
+		{
+			return miRespuesta.StatusCode;
 		}
+	clsPokemonService
+		public static async Task<List<clsPokemon>> ObtenerListadoPokemonPorGeneracionService(int generacion)
+		{
+			return listadoPokemon;
+		}
+			
 BLMAUI
-	// Ver luego qué nombres les pongo a esta clase
-	clsManejadoraAPIPokemonBL
-	clsManejadoraAPIJugadorBL
+	clsJugadorServiceBL
+		public static async Task<List<clsJugador>> ObtenerListadoJugadoresServiceBL() 
+        {
+            return await clsJugadorService.ObtenerListadoJugadoresService();
+        }
+
+        public static async Task<HttpStatusCode> GuardarJugadorServiceBL(clsJugador jugador) 
+        {
+            return await clsJugadorService.GuardarJugadorService(jugador);
+        }
+
+	clsPokemonServiceBL
+        public static async Task<List<clsPokemon>> ObtenerListadoPokemonPorGeneracionBL(int generacion)
+        {
+            return await clsPokemonService.ObtenerListadoPokemonPorGeneracionService(generacion);
+        }
+
 MAUI
 	Models
 		clsPregunta
-			¿List<clsPokemon> completa ?
-			public clsPokemon pokemonPreguntado {get;}
-			public List<clsPokemon> opciones {get;}
-			public clsPokemon pokemonSeleccionado {get; set;}
-			public bool esCorrecto {get;} // porque necesito saberlo en la partida para sumar puntos o no
-			¿private? int tiempo {}
+			private clsPokemon pokemonPreguntado;
+			private List<clsPokemon> opciones;
+			private clsPokemon pokemonSeleccionado;
+			private bool esCorrecto;
+			private int tiempo;
+			private int cantOpciones;
 	
+			public clsPokemon PokemonPreguntado {get;}
+			public List<clsPokemon> Opciones {get;}
 
+			public clsPokemon PokemonSeleccionado
+			{
+			    get { return pokemonSeleccionado; }
+			    set
+			    {
+			        pokemonSeleccionado = value;
+			        NotifyPropertyChanged(nameof(PokemonSeleccionado));
+			    }
+			}
+			public bool EsCorrecto
+			{
+			    get
+			    {
+			        return pokemonPreguntado.Equals(pokemonSeleccionado);
+			    }
+			}
+			public int Tiempo
+			{
+			    get { return tiempo; }
+			    set
+			    {
+			        tiempo = value;
+			        NotifyPropertyChanged(nameof(Tiempo));
+			    }
+			}
 
-	VM 
+			public int CantOpciones {get;}
+
+			public event PropertyChangedEventHandler PropertyChanged;
+
+			public clsPregunta()
+			{
+			    this.cantOpciones = 4;
+			    this.tiempo = 5;
+			}
+
+			public clsPregunta(clsPokemon pokemonPreguntado, List<clsPokemon> opciones) : this()
+			{
+			    this.pokemonPreguntado = pokemonPreguntado;
+			    this.opciones = opciones;
+			}
+
+			private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+			{
+			    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+			}
+
+	VM
+		Utils
+			Converters
+				ConverterColorBackgroundRespuesta
+				{
+					TODO: Cambiar los colores de las opciones al ser elegidas. Aún no lo he podido conseguir
+				}
+
+			Delegatecommand
+
+		clsMenuVM
+			private DelegateCommand botonSeleccionarPartida;
+			private DelegateCommand botonRanking;
+
+			public DelegateCommand BotonSeleccionarPartida {get;}
+			public DelegateCommand BotonRanking {get;}
+
+			public clsMenuVM() 
+			{
+			    botonSeleccionarPartida = new DelegateCommand(seleccionarPartidaExecute);
+			    botonRanking = new DelegateCommand(rankingExecute);
+			}
+
+			private async void navegar(Page pagina)
+			{
+			    await Application.Current.MainPage.Navigation.PushAsync(pagina);
+			}
+
+			private void rankingExecute()
+			{
+			    navegar(new RankingPage());
+			}
+
+			private void seleccionarPartidaExecute()
+			{
+			    navegar(new SeleccionarPartidaPage());
+			}
+
 		clsRankingVM
+		    private ObservableCollection<clsJugador> listaJugadoresVisible;
+			private DelegateCommand botonActualizar;
+			private bool cargando;
+			private bool listaVacia;
+
+			public ObservableCollection<clsJugador> ListaJugadoresVisible {get;}
+			public DelegateCommand BotonActualizar {get;}
+			public bool Cargando {get;}
+			public bool ListaVacia {get;}
+
+			public event PropertyChangedEventHandler PropertyChanged;
+
+			public clsRankingVM()
+			{
+			    // Se ejecuta también al inicio
+			    actualizarExecute();
+			    botonActualizar = new DelegateCommand(actualizarExecute);
+			}
+
+			private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+			{
+			    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+			}
+
+			private async void muestraMensaje(string titulo, string cuerpo, string boton)
+			{
+			    await Application.Current.MainPage.DisplayAlert(titulo, cuerpo, boton);
+			}
+
+			private async void actualizarExecute()
+			{
+				TODO: Asigna a la lista visible la lista obtenida de la API
+			}
+
+		clsSeleccionarPartidaVM
+			private DelegateCommand<string> botonGeneracion;
+
+			public DelegateCommand<string> BotonGeneracion {get;}
+
+			public clsSeleccionarPartidaVM()
+			{
+			    botonGeneracion = new DelegateCommand<string>(generacionExecute);
+			}
+
+			private async void muestraMensaje(string titulo, string cuerpo, string boton)
+			{
+			    await Application.Current.MainPage.DisplayAlert(titulo, cuerpo, boton);
+			}
+
+			private async void enviaDatosNavigation(List<clsPokemon> listadoPokemonPartida)
+			{
+			    await Application.Current.MainPage.Navigation.PushAsync(new PartidaPage(listadoPokemonPartida));
+			}
+
+			private async void generacionExecute(string generacion)
+			{
+				TODO: Navega a la página de Partida con la Generación escogida
+			}
+
 		clsPartidaVM
-			¿ private List<clsPokemon> listadoGeneracionElegida ?
-			private List<clsPregunta> listadoPreguntas
-			public clsPregunta preguntaActual {get;}
-			public int puntosTotales {get;} // es calculado
-			private int cantPreguntas {get;}
-			¿Nick?
+			private List<clsPokemon> listaPokemonGeneracion;
+			private List<clsPregunta> listaPreguntas;
+			private clsPregunta preguntaActual;
+			private int numRonda;
+			private int puntosTotales;
+			private int cantPreguntas;
+			private int contadorPreguntas;
+			private string nickJugador;
+			private bool partidaVisible;
+			private bool formularioVisible;
+			private DelegateCommand botonGuardar;
+			private IDispatcherTimer temporizador;
+
+			public clsPregunta PreguntaActual {get;}
+			public clsPokemon PokemonSeleccionado // Intermediario
+			{
+			    get { return preguntaActual.PokemonSeleccionado; }
+			    set
+			    {
+			        preguntaActual.PokemonSeleccionado = value;
+			        ComprobarRespuesta();
+			    }
+			}
+			public int NumRonda {get;}
+			public int PuntosTotales {get;}
+			public string NickJugador
+			{
+			    get { return nickJugador; }
+			    set
+			    {
+			        nickJugador = value;
+			        botonGuardar.RaiseCanExecuteChanged();
+			    }
+			}
+			public bool PartidaVisible {get;}
+			public bool FormularioVisible {get;}
+			public DelegateCommand BotonGuardar {get;}
+
+			public event PropertyChangedEventHandler PropertyChanged;
+
+			public clsPartidaVM()
+			{
+			}
+			public clsPartidaVM(List<clsPokemon> listaPokemonPartida)
+			{
+			    this.listaPokemonGeneracion = listaPokemonPartida;
+			    this.preguntaActual = new clsPregunta();
+			    
+			    this.cantPreguntas = 20;
+			    this.contadorPreguntas = 0;
+
+			    this.botonGuardar = new DelegateCommand(guardarJugadorPartidaExecute, habilitarGuardar);
+
+			    this.temporizador = Application.Current.Dispatcher.CreateTimer();
+			    temporizador.Interval = TimeSpan.FromSeconds(1); // Intervalo de segundos
+			    temporizador.Tick += RestarContador; // Lo que hacemos en cada segundo, evento RestarContador
+
+			    temporizador.Start();
+
+			    IniciarPartida();
+			}
+
+	Views
+		MenuPage
+		RankingPage
+		SeleccionarPartidaPage
+		PartidaPage
 
 
 

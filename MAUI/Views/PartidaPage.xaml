@@ -18,52 +18,67 @@
               HorizontalOptions="FillAndExpand"
               IsVisible="{Binding PartidaVisible}">
 
-            <Label Grid.Row="0" Grid.ColumnSpan="2"  Text="{Binding NumRonda, StringFormat='Ronda {0}'}"
+            <Label Grid.Row="0" Grid.ColumnSpan="2"  
+                   Text="{Binding NumRonda, StringFormat='Ronda {0}'}"
                    FontSize="48"
                    FontFamily="PokemonFuente"
                    HorizontalOptions="Center"
                    TextColor="#FF6F00" />
 
-            <VerticalStackLayout Grid.Row="1" Grid.Column="0"
+            <VerticalStackLayout Grid.Row="1" 
+                                 Grid.Column="0"
                                  HorizontalOptions="FillAndExpand"
                                  VerticalOptions="Center"
                                  Spacing="2">
+
                 <Label Text="Tiempo"
                        FontSize="24"
                        FontFamily="GameBoyFuente"
                        TextColor="#D32F2F"
                        HorizontalOptions="Center" />
+
                 <Label Text="{Binding PreguntaActual.Tiempo}"
                        FontSize="48"
                        FontFamily="GameBoyFuente"
                        TextColor="#D32F2F"
                        HorizontalOptions="Center" />
+
             </VerticalStackLayout>
 
-            <VerticalStackLayout Grid.Row="1" Grid.Column="1"  HorizontalOptions="FillAndExpand"
+            <VerticalStackLayout Grid.Row="1" 
+                                 Grid.Column="1"  
+                                 HorizontalOptions="FillAndExpand"
                                  VerticalOptions="Center"
                                  Spacing="2">
+
                 <Label Text="Puntos"
                        FontSize="24"
                        FontFamily="GameBoyFuente"
                        TextColor="#388E3C"
                        HorizontalOptions="Center" />
+
                 <Label Text="{Binding PuntosTotales}"
                        FontSize="48"
                        FontFamily="GameBoyFuente"
                        TextColor="#388E3C"
                        HorizontalOptions="Center" />
+
             </VerticalStackLayout>
 
-            <Image Grid.Row="2" Grid.ColumnSpan="2"  Source="{Binding PreguntaActual.PokemonPreguntado.Imagen}"
+            <Image Grid.Row="2" 
+                   Grid.ColumnSpan="2"  
+                   Source="{Binding PreguntaActual.PokemonPreguntado.Imagen}"
                    HeightRequest="300"
                    WidthRequest="300"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"/>
 
-            <CollectionView Grid.Row="3" Grid.ColumnSpan="2"  ItemsSource="{Binding PreguntaActual.Opciones}"
+            <CollectionView Grid.Row="3" 
+                            Grid.ColumnSpan="2"  
+                            ItemsSource="{Binding PreguntaActual.Opciones}"
                             SelectionMode="Single"
                             SelectedItem="{Binding PokemonSeleccionado, Mode=TwoWay}">
+
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
                                      Span="2"
@@ -93,53 +108,56 @@
         </Grid>
 
         <Grid Margin="0,20,0,10"
-      RowDefinitions="Auto,Auto,Auto,Auto"  ColumnDefinitions="*"
-      VerticalOptions="Center"
-      HorizontalOptions="FillAndExpand"
-      IsVisible="{Binding FormularioVisible}"
-      RowSpacing="15">
+              RowDefinitions="Auto,Auto,Auto,Auto"  
+              ColumnDefinitions="*"
+              VerticalOptions="Center"
+              HorizontalOptions="FillAndExpand"
+              IsVisible="{Binding FormularioVisible}"
+              RowSpacing="15">
 
-    <Label Grid.Row="0"
-           Text="Fin de la partida"
-           FontSize="36"
-           FontFamily="PokemonFuente"
-           TextColor="#FF6F00"
-           HorizontalOptions="Center"
-           VerticalOptions="End"/>
+            <Label Grid.Row="0"
+                   Text="Fin de la partida"
+                   FontSize="36"
+                   FontFamily="PokemonFuente"
+                   TextColor="#FF6F00"
+                   HorizontalOptions="Center"
+                   VerticalOptions="End"/>
 
-    <Grid Grid.Row="1">
-        <Label Text="{Binding PuntosTotales, StringFormat='Has conseguido: {0} Punto(s)'}"
-               FontSize="22"
-               FontFamily="GameBoyFuente"
-               TextColor="#388E3C"
-               HorizontalOptions="Center"
-               VerticalOptions="Start"
-               HorizontalTextAlignment="Center"/>
-    </Grid>
+            <Grid Grid.Row="1">
+                <Label 
+                    Text="{Binding PuntosTotales, StringFormat='Has conseguido: {0} Punto(s)'}"
+                    FontSize="22"
+                    FontFamily="GameBoyFuente"
+                    TextColor="#388E3C"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start"
+                    HorizontalTextAlignment="Center"/>
+            </Grid>
 
-    <Entry Grid.Row="2"
-           Placeholder="Escribe tu Nick"
-           Text="{Binding NickJugador}"
-           FontSize="20"
-           FontFamily="GameBoyFuente"
-           TextColor="#5D4037"
-           HorizontalOptions="Fill"
-           VerticalOptions="Center"
-           Margin="0"
-           HeightRequest="50"/>
+            <Entry Grid.Row="2"
+                   Placeholder="Escribe tu Nick"
+                   Text="{Binding NickJugador}"
+                   FontSize="20"
+                   FontFamily="GameBoyFuente"
+                   TextColor="#5D4037"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Center"
+                   Margin="0"
+                   HeightRequest="50"/>
 
-    <Button Grid.Row="3"
-            Text="Guardar"
-            Command="{Binding BotonGuardar}"
-            FontSize="20"
-            FontFamily="GameBoyFuente"
-            BackgroundColor="#388E3C"
-            TextColor="White"
-            HorizontalOptions="Center"
-            VerticalOptions="Start"
-            WidthRequest="200"
-            HeightRequest="50"
-            CornerRadius="10"/>
-</Grid>
+            <Button Grid.Row="3"
+                    Text="Guardar"
+                    Command="{Binding BotonGuardar}"
+                    FontSize="20"
+                    FontFamily="GameBoyFuente"
+                    BackgroundColor="#388E3C"
+                    TextColor="White"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start"
+                    WidthRequest="200"
+                    HeightRequest="50"
+                    CornerRadius="10"/>
+        </Grid>
+
     </VerticalStackLayout>
 </ContentPage>

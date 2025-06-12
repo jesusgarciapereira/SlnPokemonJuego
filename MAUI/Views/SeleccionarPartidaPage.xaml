@@ -14,11 +14,11 @@
 
             <Grid>
                 <Label Text="Selecciona Generación"
-           FontSize="48"
-           FontFamily="PokemonFuente"
-           HorizontalOptions="Center"
-           HorizontalTextAlignment="Center"
-           TextColor="#FF6F00"/>
+                       FontSize="48"
+                       FontFamily="PokemonFuente"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       TextColor="#FF6F00"/>
             </Grid>
 
             <Button Text="1º Kanto"

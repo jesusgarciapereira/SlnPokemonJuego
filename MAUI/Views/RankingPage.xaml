@@ -27,51 +27,49 @@
         <ActivityIndicator IsRunning="{Binding Cargando}" IsVisible="{Binding Cargando}" />
 
         <Grid>
-        <Label Text="No hay Jugadores disponibles en la Base de Datos"
-               TextColor="Red"
-               FontAttributes="Bold"
-               FontFamily="GameBoyFuente"
-               FontSize="20"
-               IsVisible="{Binding ListaVacia}"
-               HorizontalOptions="Center"
-               HorizontalTextAlignment="Center"/>
+            <Label Text="No hay Jugadores disponibles en la Base de Datos"
+                   TextColor="Red"
+                   FontAttributes="Bold"
+                   FontFamily="GameBoyFuente"
+                   FontSize="20"
+                   IsVisible="{Binding ListaVacia}"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"/>
         </Grid>
+
         <ListView ItemsSource="{Binding ListaJugadoresVisible}" 
-          HasUnevenRows="True"
-          SeparatorVisibility="None"
-          BackgroundColor="Transparent">
+                  HasUnevenRows="True"
+                  SeparatorVisibility="None"
+                  BackgroundColor="Transparent">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <Grid ColumnDefinitions="*,Auto"
-                      Padding="10"
-                      Margin="5"
-                      BackgroundColor="#E3F2FD"
-                      HorizontalOptions="FillAndExpand"
-                      VerticalOptions="Center">
+                              Padding="10"
+                              Margin="5"
+                              BackgroundColor="#E3F2FD"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="Center">
 
-                            <!-- Nick (Izquierda) -->
                             <Label Text="{Binding Nick}" 
-                           FontFamily="GameBoyFuente"
-                           FontSize="20"
-                           TextColor="#1976D2"
-                           Grid.Column="0"
-                           VerticalOptions="Center"
-                           HorizontalOptions="Start"/>
+                                   FontFamily="GameBoyFuente"
+                                   FontSize="20"
+                                   TextColor="#1976D2"
+                                   Grid.Column="0"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Start"/>
 
-                            <!-- Puntuación (Derecha) -->
                             <Label Text="{Binding Puntuacion}" 
-                           FontFamily="GameBoyFuente"
-                           FontSize="18"
-                           TextColor="#388E3C"
-                           Grid.Column="1"
-                           VerticalOptions="Center"
-                           HorizontalOptions="End"/>
+                                   FontFamily="GameBoyFuente"
+                                   FontSize="18"
+                                   TextColor="#388E3C"
+                                   Grid.Column="1"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="End"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
     </StackLayout>
 </ContentPage>

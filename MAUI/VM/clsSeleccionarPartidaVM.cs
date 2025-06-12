@@ -2,13 +2,6 @@
 using DTO;
 using MAUI.Views;
 using MAUI.VM.Utils;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MAUI.VM
 {
@@ -23,9 +16,6 @@ namespace MAUI.VM
         {
             get { return botonGeneracion; }
         }
-        
-
-     
         #endregion
 
         #region Constructores
@@ -36,8 +26,6 @@ namespace MAUI.VM
         #endregion
 
         #region Métodos
-        // Creo que este primer Método no hará falta aquí 
-
         /// <summary>
         /// Muestra un mensaje emergente.
         /// </summary>
@@ -48,8 +36,6 @@ namespace MAUI.VM
         {
             await Application.Current.MainPage.DisplayAlert(titulo, cuerpo, boton);
         }
-
-        
 
         /// <summary>
         /// Navega hacia la página de partida seleccionada pasando el objeto del parámetro.
@@ -62,7 +48,6 @@ namespace MAUI.VM
         #endregion
 
         #region Comandos
-
         /// <summary>
         /// Método asociado al execute del comando botonGeneracion que navega a la página de Partida con la Generación escogida
         /// </summary>
@@ -72,23 +57,25 @@ namespace MAUI.VM
         private async void generacionExecute(string generacion)
         {
             List<clsPokemon> listadoPokemonPartida;
-            // TODO: Try
-            if (await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(int.Parse(generacion)) != null) // Para evitar NullArgumentException
+            try
             {
-                listadoPokemonPartida = await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(int.Parse(generacion));
+                if (await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(int.Parse(generacion)) != null) // Para evitar NullArgumentException
+                {
+                    listadoPokemonPartida = await clsPokemonServiceBL.ObtenerListadoPokemonPorGeneracionBL(int.Parse(generacion));
 
-                if (listadoPokemonPartida.Count == 0)
-                {
-                    muestraMensaje("Sin datos", "No se encontraron datos, vuelva a intentarlo más tarde", "OK");
-                }
-                else
-                {
-                    enviaDatosNavigation(listadoPokemonPartida);
+                    if (listadoPokemonPartida.Count == 0)
+                    {
+                        muestraMensaje("Sin datos", "No se encontraron datos, vuelva a intentarlo más tarde", "OK");
+                    }
+                    else
+                    {
+                        enviaDatosNavigation(listadoPokemonPartida);
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                muestraMensaje("Error", "Ha habido un problema en la Base de Datos, vuelva a intentarlo más tarde", "OK");
+                muestraMensaje("Error", "Ha habido un problema, vuelva a intentarlo más tarde", "OK");
             }
         }
         #endregion
