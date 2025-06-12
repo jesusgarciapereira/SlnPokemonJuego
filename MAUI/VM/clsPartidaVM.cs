@@ -87,7 +87,7 @@ namespace MAUI.VM
         {
             this.listaPokemonGeneracion = listaPokemonPartida;
             this.preguntaActual = new clsPregunta();
-            
+
             this.cantPreguntas = 20;
             this.contadorPreguntas = 0;
 
@@ -131,54 +131,32 @@ namespace MAUI.VM
         {
             await Application.Current.MainPage.Navigation.PushAsync(pagina);
         }
+
         /// <summary>
-        /// Devuelve una selección aleatoria de Pokémon sin repetir.
+        /// Inicializa una nueva partida generando la lista de preguntas, estableciendo la primera pregunta
+        /// como actual y actualizando las propiedades necesarias para reflejar el inicio de la ronda.
         /// </summary>
-        /// Pre: El listado original siempre debe estar llena y la cantidad debe ser menor o igual al tamannio de la lista 
-        /// Post: Ninguna
-        /// <param name="listadoOriginal">Lista original de Pokémon de donde seleccionar.</param>
-        /// <param name="cantidad">Número de Pokémon a seleccionar aleatoriamente.</param>
-        /// <returns>
-        /// Una lista con la cantidad solicitada de Pokémon seleccionados aleatoriamente,
-        /// sin repeticiones. Si la cantidad es mayor que el número de elementos disponibles,
-        /// se devuelven todos los Pokémon mezclados.
-        /// </returns>
-        private static List<clsPokemon> ObtenerPokemonAleatorios(List<clsPokemon> listadoOriginal, int cantidad)
+        private void IniciarPartida()
         {
-            // Copiamos la lista original para no modificarla
-            List<clsPokemon> copiaListadoParametro = new List<clsPokemon>(listadoOriginal);
-            List<clsPokemon> listadoSeleccionadoAleatorio = new List<clsPokemon>();
+            this.listaPreguntas = CreaPreguntas(cantPreguntas, preguntaActual.CantOpciones);
 
-            Random random = new Random(); // Generador de números aleatorios
+            this.partidaVisible = true;
 
-            int indiceAleatorio;
-            clsPokemon pokemonSeleccionado;
+            this.preguntaActual = new clsPregunta(listaPreguntas[contadorPreguntas].PokemonPreguntado, listaPreguntas[contadorPreguntas].Opciones);
 
-            for (int i = 0; i < cantidad; i++)
-            {
-                indiceAleatorio = random.Next(copiaListadoParametro.Count);      // Índice aleatorio
-                pokemonSeleccionado = copiaListadoParametro[indiceAleatorio];    // Seleccionamos el Pokémon
-                listadoSeleccionadoAleatorio.Add(pokemonSeleccionado);           // Lo añadimos a la nueva lista
-                copiaListadoParametro.RemoveAt(indiceAleatorio);                 // Lo eliminamos para evitar repeticiones
-            }
+            NotifyPropertyChanged(nameof(PreguntaActual));
 
-            return listadoSeleccionadoAleatorio;
+            this.numRonda = contadorPreguntas + 1;
+
         }
 
         /// <summary>
-        /// Crea una lista de preguntas para la partida, donde cada pregunta contiene un Pokémon preguntado
-        /// y un conjunto de opciones de respuesta.
+        /// Crea una lista de elementos de tipo clsPregunta, seleccionando aleatoriamente
+        /// un conjunto de opciones por pregunta y determinando un Pokémon correcto entre ellas.
         /// </summary>
-        /// Pre: La lista original de Pokémon debe contener suficientes elementos para generar 
-        ///      la cantidad de preguntas multiplicada por la cantidad de opciones por pregunta.
-        /// Post: Se devuelve una lista de preguntas con las opciones y el Pokémon preguntado asignados.
-        /// <param name="listaPokemonPartida">Lista original de Pokémon disponibles para generar las preguntas.</param>
-        /// <param name="cantPreguntas">Número de preguntas que se desean generar.</param>
-        /// <param name="cantOpciones">Cantidad de opciones por pregunta.</param>
-        /// <returns>
-        /// Una lista de objetos clsPregunta, cada uno con un Pokémon preguntado y su lista de opciones.
-        /// Las opciones no se repiten entre preguntas.
-        /// </returns>
+        /// <param name="cantPreguntas">Cantidad total de preguntas a generar.</param>
+        /// <param name="cantOpciones">Cantidad de opciones disponibles por cada pregunta.</param>
+        /// <returns>Una lista de objetos <see cref="clsPregunta"/>, cada uno con un Pokémon preguntado y una lista de opciones.</returns>
         private List<clsPregunta> CreaPreguntas(int cantPreguntas, int cantOpciones)
         {
             List<clsPokemon> listaOpcionesTotales = ObtenerPokemonAleatorios(this.listaPokemonGeneracion, cantPreguntas * preguntaActual.CantOpciones);
@@ -211,42 +189,48 @@ namespace MAUI.VM
         }
 
         /// <summary>
-        /// Muestra cada pregunta de la lista durante un número determinado de segundos.
+        /// Devuelve una selección aleatoria de un listado de Pokémon del parámetro sin repetir.
         /// </summary>
-        /// Pre: La lista de preguntas debe estar previamente generada y contener elementos.
-        /// Post: Se muestra una pregunta a la vez, actualizando la propiedad 'PreguntaActual' cada intervalo de tiempo.
-        /// <param name="segundos">Cantidad de segundos que se muestra cada pregunta antes de pasar a la siguiente.</param>
-        /// <returns>Una tarea asincrónica que gestiona la temporización entre preguntas.</returns>
-        private void IniciarPartida()
+        /// Pre: El listado original siempre debe estar llena y la cantidad debe ser menor o igual al tamannio de la lista 
+        /// Post: Ninguna
+        /// <param name="listadoOriginal">Lista original de Pokémon de donde seleccionar.</param>
+        /// <param name="cantidad">Número de Pokémon a seleccionar aleatoriamente.</param>
+        /// <returns>
+        /// Una lista con la cantidad solicitada de Pokémon seleccionados aleatoriamente,
+        /// sin repeticiones.
+        /// </returns>
+        private static List<clsPokemon> ObtenerPokemonAleatorios(List<clsPokemon> listadoOriginal, int cantidad)
         {
-            this.listaPreguntas = CreaPreguntas(cantPreguntas, preguntaActual.CantOpciones);
+            // Copiamos la lista original para no modificarla
+            List<clsPokemon> copiaListadoParametro = new List<clsPokemon>(listadoOriginal);
+            List<clsPokemon> listadoSeleccionadoAleatorio = new List<clsPokemon>();
 
-            partidaVisible = true;
+            Random random = new Random(); // Generador de números aleatorios
 
-            this.preguntaActual = new clsPregunta(listaPreguntas[contadorPreguntas].PokemonPreguntado, listaPreguntas[contadorPreguntas].Opciones);
+            int indiceAleatorio;
+            clsPokemon pokemonSeleccionado;
 
-            NotifyPropertyChanged(nameof(PreguntaActual));
+            for (int i = 0; i < cantidad; i++)
+            {
+                indiceAleatorio = random.Next(copiaListadoParametro.Count);      // Índice aleatorio
+                pokemonSeleccionado = copiaListadoParametro[indiceAleatorio];    // Seleccionamos el Pokémon
+                listadoSeleccionadoAleatorio.Add(pokemonSeleccionado);           // Lo añadimos a la nueva lista
+                copiaListadoParametro.RemoveAt(indiceAleatorio);                 // Lo eliminamos para evitar repeticiones
+            }
 
-            this.numRonda = contadorPreguntas + 1;
-
-            //while (preguntaActual.PokemonSeleccionado == null && preguntaActual.Tiempo > 0)
-            //{
-            //    await Task.Delay(100); // Espera 100ms antes de volver a comprobar
-            //}
-
-            // AsignaPuntos();
-
-
-            //partidaVisible = false;
-            //NotifyPropertyChanged(nameof(PartidaVisible));
-
-            //formularioVisible = true;
-            //NotifyPropertyChanged(nameof(FormularioVisible));
-
-            // this.contadorPreguntas++;
-            // GuardarJugadorPartida();
-            // navegar(new MenuPage());
+            return listadoSeleccionadoAleatorio;
         }
+
+
+
+        /// <summary>
+        /// Disminuye el contador de tiempo de la pregunta actual si aún queda tiempo
+        /// y no se ha seleccionado un Pokémon.
+        /// Si el tiempo se agota o ya se ha realizado una selección, comprueba la respuesta.
+        /// </summary>
+        /// <param name="sender">Objeto que generó el evento.</param>
+        /// <param name="e">Argumentos del evento.</param>
+
         private void RestarContador(object sender, EventArgs e)
         {
             if (this.preguntaActual.Tiempo > 0 && this.preguntaActual.PokemonSeleccionado == null)
@@ -256,55 +240,20 @@ namespace MAUI.VM
             }
             else
             {
-                // temporizador.Stop();
-
                 ComprobarRespuesta();
-                // Pasar a la siguiente pregunta
-
-
-                // Esto creo que no hace falta
-                //tiempo = 5;
-                //NotifyPropertyChanged(nameof(Tiempo));
-
-                //temporizador.Start();
             }
         }
 
         /// <summary>
-        /// Comprueba que pokemonSeleccionado y pokemonCorrecto son iguales, para el temporizador, asigna los puntos y pasa a la siguiente pregunta
+        /// Comprueba la respuesta del jugador actual.
+        /// Asigna los puntos correspondientes y avanza a la siguiente pregunta.
         /// </summary>
+
         private void ComprobarRespuesta()
         {
             AsignaPuntos();
 
-            
-
             SiguientePregunta();
-        }
-
-        private void SiguientePregunta()
-        {
-            this.contadorPreguntas++;
-
-            this.numRonda = contadorPreguntas + 1;
-
-            NotifyPropertyChanged(nameof(NumRonda));
-
-            if (this.contadorPreguntas < this.cantPreguntas)
-            {
-                this.preguntaActual = this.listaPreguntas[contadorPreguntas];
-                NotifyPropertyChanged(nameof(PreguntaActual));
-            }
-            else
-            {
-                temporizador.Stop();
-
-                partidaVisible = false;
-                NotifyPropertyChanged(nameof(PartidaVisible));
-
-                formularioVisible = true;
-                NotifyPropertyChanged(nameof(FormularioVisible));
-            }
         }
 
         /// <summary>
@@ -325,14 +274,59 @@ namespace MAUI.VM
 
                 NotifyPropertyChanged(nameof(PuntosTotales));
             }
-
-
         }
 
         /// <summary>
-        /// Guarda la Partida del jugador llamando a la API
+        /// Avanza a la siguiente pregunta en la partida.
+        /// Si quedan preguntas, actualiza la pregunta actual y el número de ronda.
+        /// Si no quedan preguntas, detiene el temporizador y cambia la visibilidad de la interfaz
+        /// para mostrar el formulario final.
         /// </summary>
-        /// <returns></returns>
+        private void SiguientePregunta()
+        {
+            if (this.contadorPreguntas < this.cantPreguntas - 1)
+            {
+                this.contadorPreguntas++;
+
+                this.numRonda = contadorPreguntas + 1;
+                NotifyPropertyChanged(nameof(NumRonda));
+
+                this.preguntaActual = this.listaPreguntas[contadorPreguntas];
+                NotifyPropertyChanged(nameof(PreguntaActual));
+            }
+            else
+            {
+                temporizador.Stop();
+
+                partidaVisible = false;
+                NotifyPropertyChanged(nameof(PartidaVisible));
+
+                formularioVisible = true;
+                NotifyPropertyChanged(nameof(FormularioVisible));
+            }
+        }
+
+        /// <summary>
+        /// Guarda la información del jugador y la partida de forma asíncrona,
+        /// y luego navega de vuelta al menú principal.
+        /// Se asegura de que la ventana de navegación no se muestre antes de completar el guardado.
+        /// </summary>
+        private async Task GuardarVolviendo()
+        {
+            // Porque no quiero que la ventana se vea antes de navegar
+            await GuardarJugadorPartida();
+
+            navegar(new MenuPage());
+        }
+
+        /// <summary>
+        /// Llama a la capa BL para guardar un jugador.
+        /// Muestra un mensaje al usuario según el resultado de la operación:
+        /// - Éxito: Puntuación guardada correctamente.
+        /// - Error 400: Datos enviados no válidos.
+        /// - Error 404: Recurso no encontrado.
+        /// - Excepción: Error general de comunicación o sistema.
+        /// </summary>
         private async Task GuardarJugadorPartida()
         {
             clsJugador jugador = new clsJugador(this.nickJugador, this.puntosTotales);
@@ -358,44 +352,22 @@ namespace MAUI.VM
                 muestraMensaje("Error", "Ha habido un problema, vuelva a intentarlo más tarde", "OK");
             }
         }
-
-
-        //private void MostrarPreguntasPorSegundos()
-        //{
-        //    int indice = 0;
-
-        //    this.preguntaActual = listaPreguntas[indice];
-        //    NotifyPropertyChanged(nameof(PreguntaActual));
-
-        //    if (preguntaActual.Tiempo == 0)
-        //    {
-        //        indice++;
-
-        //        this.preguntaActual = listaPreguntas[indice];
-        //        NotifyPropertyChanged(nameof(PreguntaActual));
-        //    }
-
-        //}
-
-        private async Task GuardarVolviendo() 
-        {
-            // Porque no quiero que la ventana se vea antes de navegar
-
-
-            await GuardarJugadorPartida();
-
-            navegar(new MenuPage());
-        }
         #endregion
 
         #region Comandos
 
-
+        /// <summary>
+        /// Método asociado al execute del comando botonGuardar que guarda la información del jugador ny navega a la pantalla del menú principal.
+        /// </summary>
         private void guardarJugadorPartidaExecute()
         {
             GuardarVolviendo();
         }
 
+        /// <summary>
+        /// Método asociado al canExecute del comando botonGuardar que habilita o deshabilita el botón de Guardar.
+        /// </summary>
+        /// <returns>True si se ha seleccionado si se ha escrito algún nick, false en caso contrario.</returns>
         private bool habilitarGuardar()
         {
             bool habilitado = false;
@@ -406,9 +378,7 @@ namespace MAUI.VM
             }
 
             return habilitado;
-
         }
-
         #endregion
     }
 

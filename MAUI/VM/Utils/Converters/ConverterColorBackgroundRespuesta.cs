@@ -13,35 +13,16 @@ namespace MAUI.VM.Utils.Converters
     {
 
         /// <summary>
-        /// Convierte un valor de humedad en un color representando su nivel.
+        /// Convierte el estado de una pregunta en un color visual.
+        /// Devuelve LightGreen si la respuesta es correcta, IndianRed si es incorrecta, y White si no se ha seleccionado ninguna respuesta.
         /// </summary>
-        /// <param name="value">Valor de humedad como entero (0–100).</param>
+        /// <param name="value">Objeto que representa la pregunta (clsPregunta).</param>
         /// <param name="targetType">Tipo de destino (no se usa).</param>
         /// <param name="parameter">Parámetro opcional (no se usa).</param>
         /// <param name="culture">Información de cultura (no se usa).</param>
-        /// <returns>Un color: verde (≤33%), amarillo (34–66%), o rojo (>66%).</returns>
+        /// <returns>Un color que representa el estado de la respuesta.</returns>
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            //Color color = Colors.Transparent;
-            //clsPregunta pregunta;
-
-            //if (value != null)
-            //{
-            //    pregunta = (clsPregunta)value;
-
-            //    if (pregunta.EsCorrecto)
-            //    {
-
-            //        color = Colors.LightGreen;
-            //    }
-            //    else
-            //    {
-            //        color = Colors.IndianRed;
-            //    }
-            //}
-
-            //return color;
-
             Color color = Colors.White;
             clsPregunta pregunta = (clsPregunta)value;
 
@@ -60,27 +41,6 @@ namespace MAUI.VM.Utils.Converters
                 
             }
             return color;
-
-            //var pokemonActual = value as clsPokemon;  // El Pokémon actual en la lista de opciones
-            //var pregunta = parameter as clsPregunta;  // La pregunta actual
-
-            //if (pokemonActual == null || pregunta == null)
-            //    return Colors.Transparent;
-
-            //// Si no se ha seleccionado nada, transparente
-            //if (pregunta.PokemonSeleccionado == null)
-            //    return Colors.Transparent;
-
-            //// Verde si es la respuesta correcta
-            //if (pokemonActual.Equals(pregunta.PokemonPreguntado))
-            //    return Colors.LightGreen;
-
-            //// Rojo si es la opción seleccionada pero incorrecta
-            //if (pokemonActual.Equals(pregunta.PokemonSeleccionado))
-            //    return Colors.IndianRed;
-
-            //// Transparente para otras opciones no seleccionadas
-            //return Colors.Transparent;
         }
 
         /// <summary>

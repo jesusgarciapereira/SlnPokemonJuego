@@ -402,6 +402,92 @@ MAUI
 			    IniciarPartida();
 			}
 
+			private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+			{
+			    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+			}
+
+			private async void muestraMensaje(string titulo, string cuerpo, string boton)
+			{
+			    await Application.Current.MainPage.DisplayAlert(titulo, cuerpo, boton);
+			}
+
+			private async void navegar(Page pagina)
+			{
+			    await Application.Current.MainPage.Navigation.PushAsync(pagina);
+			}
+
+			private void IniciarPartida()
+			{
+				TODO: Inicializa una nueva partida generando la lista de preguntas, estableciendo la primera pregunta como actual y actualizando las propiedades necesarias para reflejar el inicio de la ronda.
+			}
+
+			private List<clsPregunta> CreaPreguntas(int cantPreguntas, int cantOpciones)
+			{
+				 TODO: Crea una lista de elementos de tipo clsPregunta, seleccionando aleatoriamente un conjunto de opciones por pregunta y determinando un Pokémon correcto entre ellas.
+			}
+
+			private static List<clsPokemon> ObtenerPokemonAleatorios(List<clsPokemon> listadoOriginal, int cantidad)
+			{
+				TODO: Devuelve una selección aleatoria de un listado de Pokémon del parámetro sin repetir.
+			}
+
+			private void RestarContador(object sender, EventArgs e)
+			{
+				if (this.preguntaActual.Tiempo > 0 && this.preguntaActual.PokemonSeleccionado == null)
+				{
+				    this.preguntaActual.Tiempo--;
+
+				}
+				else
+				{
+				    ComprobarRespuesta();
+				}
+			}
+
+			private void ComprobarRespuesta()
+			{
+			    AsignaPuntos();
+
+			    SiguientePregunta();
+			}
+
+			private void AsignaPuntos()
+			{
+				TODO: Asigna los puntos totales de la partida cada vez que se responde una pregunta
+			}
+
+			private void SiguientePregunta()
+			{
+				TODO:   Avanza a la siguiente pregunta en la partida.
+						Si quedan preguntas, actualiza la pregunta actual y el número de ronda.
+						Si no quedan preguntas, detiene el temporizador y cambia la visibilidad de la interfaz
+						para mostrar el formulario final.
+			}
+
+			private async Task GuardarVolviendo()
+			{
+			    // Porque no quiero que la ventana se vea antes de navegar
+			    await GuardarJugadorPartida();
+
+			    navegar(new MenuPage());
+			}
+
+			private async Task GuardarJugadorPartida()
+			{
+				TODO: Llama a la capa BL para guardar un jugador.
+			}
+
+			private void guardarJugadorPartidaExecute()
+			{
+				TODO: Método asociado al execute del comando botonGuardar que guarda la información del jugador ny navega a la pantalla del menú principal.
+			}
+
+			private bool habilitarGuardar()
+			{
+				TODO: Método asociado al canExecute del comando botonGuardar que habilita o deshabilita el botón de Guardar.
+			}
+
 	Views
 		MenuPage
 		RankingPage
